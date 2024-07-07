@@ -10,6 +10,6 @@ RUN apt-get -qq update\
 
 COPY . /usr/src/irc_server/
 
-RUN chmod +x start.sh
+RUN make re
 
-CMD [ "./start.sh" ]
+CMD [ "./ircserv", "3000", "a" ]
