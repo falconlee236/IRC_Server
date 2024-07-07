@@ -3,6 +3,7 @@
 #include <cstring>
 #include <sstream>
 #include <sys/socket.h>
+#include <sys/event.h>
 #include <netinet/in.h>
 #include <arpa/inet.h> // inet_ntoa
 
@@ -20,6 +21,14 @@ int main(int ac, char **av){
         std::cerr << "error!\n";
         exit(1);
     }
+
+    int kqueue_fd = kqueue();
+    if (kqueue_fd < 0){
+        std::cerr << "error!\n";
+        exit(1);
+    }
+    std::cout << kqueue_fd << "\n";
+
     /*
     //SECTION
     domain - AF_INET = ipv4, 
