@@ -6,8 +6,9 @@
 #include <sys/event.h>
 #include <netinet/in.h>
 #include <arpa/inet.h> // inet_ntoa
+#include <unistd.h>
 
-int main(int ac, char **av){
+int main(int ac, char **av) {
     if (ac != 3) {
         std::cerr << "Invalid argument, need 2 arguments" << "\n";
         std::cerr << "1st: Port number, 2nd: password" << "\n";
@@ -21,13 +22,6 @@ int main(int ac, char **av){
         std::cerr << "error!\n";
         exit(1);
     }
-
-    int kqueue_fd = kqueue();
-    if (kqueue_fd < 0){
-        std::cerr << "error!\n";
-        exit(1);
-    }
-    std::cout << kqueue_fd << "\n";
 
     /*
     //SECTION
@@ -68,31 +62,77 @@ int main(int ac, char **av){
     } else {
         std::cout << "irc server is running on port: " << PORT << "\n";
     }
-    
-    while(1) {
-        struct sockaddr_in client_addr;
-        socklen_t client_len = sizeof(client_addr);
-        int client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_len);
-        if (client_socket == -1) {
-            std::cerr << "get client socket error!" << "\n";
+
+    // 새로운 event queue 생성
+    int kqueue_fd = kqueue();
+    if (kqueue_fd < 0){
+        std::cerr << "error!\n";
+        exit(1);
+    }
+
+    // kqueue에 server_socket 등록
+    // EVFILT_READ: 읽을 data가 있을 때마다 반환
+    // EV_ADD: kqueue에 이벤트 추가
+    // EV_ENABLE: kevent() 호출 시 event 반환 허용
+    struct kevent change_event;
+    EV_SET(&change_event, server_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+    if (kevent(kqueue_fd, &change_event, 1, NULL, 0, NULL) < 0) {
+        std::cerr << "error!\n";
+        exit(1);
+    }
+
+    while (true) {
+        // 발생한 event가 반환될 배열
+        struct kevent events[10];
+        int new_events = kevent(kqueue_fd, NULL, 0, events, 10, NULL);
+        if (new_events < 0) {
+            std::cerr << "error!\n";
             exit(1);
         }
-        std::string client_ip = std::string(inet_ntoa(client_addr.sin_addr));
-        int client_port = ntohs(client_addr.sin_port);
-        std::cout << "client " << client_ip << ":" << client_port << " conneted\n" << "\n";
-        while(1){
-            char buffer[1024] = { 0, };
-            ssize_t recv_byte = recv(client_socket, buffer, sizeof(buffer), 0);
-            if (recv_byte == 0) {
-                std::cout << "client " << client_ip << ":" << client_port << " is leaved" << "\n";
-                break;
+
+        for (int i = 0; i < new_events; ++i) {
+            if ((int)events[i].ident == server_socket) {
+                struct sockaddr_in client_addr;
+                socklen_t client_len = sizeof(client_addr);
+                int client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_len);
+                if (client_socket == -1) {
+                    std::cerr << "get client socket error!" << "\n";
+                    exit(1);
+                }
+
+                std::string client_ip = std::string(inet_ntoa(client_addr.sin_addr));
+                int client_port = ntohs(client_addr.sin_port);
+                std::cout << "client " << client_ip << ":" << client_port << " connected\n" << "\n";
+
+                EV_SET(&change_event, client_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+                if (kevent(kqueue_fd, &change_event, 1, NULL, 0, NULL) < 0) {
+                    std::cerr << "error!\n";
+                    close(client_socket);
+                    continue;
+                }
+            } else if (events[i].filter == EVFILT_READ) {
+                int client_socket = events[i].ident;
+                char buffer[1024] = { 0, };
+                ssize_t recv_byte = recv(client_socket, buffer, sizeof(buffer), 0);
+                if (recv_byte == 0) {
+                    // std::cout << "client " << client_ip << ":" << client_port << " is leaved" << "\n";
+                    std::cout << "client disconnected\n";
+
+                    // client 소켓을 kqueue에서 제거
+                    EV_SET(&change_event, client_socket, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+                    kevent(kqueue_fd, &change_event, 1, NULL, 0, NULL);
+
+                    close(client_socket);
+                    break;
+                }
+                std::cout << "received! : " << buffer << "\n";
+                
+                std::string msg = buffer;
+                msg = "send: " + msg;
+                send(client_socket, msg.c_str(), msg.size(), 0);
             }
-            std::cout << "received! : " << buffer << "\n";
-            
-            std::string msg = buffer;
-            msg = "send: " + msg;
-            send(client_socket, msg.c_str(), msg.size(), 0);
         }
     }
+
     return 0;
 }
