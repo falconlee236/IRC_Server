@@ -6,6 +6,7 @@
 #include <sys/event.h>
 #include <netinet/in.h>
 #include <arpa/inet.h> // inet_ntoa
+#include <unistd.h>
 
 int main(int ac, char **av) {
     if (ac != 3) {
@@ -105,8 +106,8 @@ int main(int ac, char **av) {
 
                 EV_SET(&change_event, client_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
                 if (kevent(kqueue_fd, &change_event, 1, NULL, 0, NULL) < 0) {
-                    //error
-                    //close client socket
+                    std::cerr << "error!\n";
+                    close(client_socket);
                     continue;
                 }
             } else if (events[i].filter == EVFILT_READ) {
@@ -115,7 +116,13 @@ int main(int ac, char **av) {
                 ssize_t recv_byte = recv(client_socket, buffer, sizeof(buffer), 0);
                 if (recv_byte == 0) {
                     // std::cout << "client " << client_ip << ":" << client_port << " is leaved" << "\n";
-                    std::cout << "client unconnected\n";
+                    std::cout << "client disconnected\n";
+
+                    // client 소켓을 kqueue에서 제거
+                    EV_SET(&change_event, client_socket, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+                    kevent(kqueue_fd, &change_event, 1, NULL, 0, NULL);
+
+                    close(client_socket);
                     break;
                 }
                 std::cout << "received! : " << buffer << "\n";
