@@ -7,6 +7,9 @@
 #include <sys/event.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <map>
+
+#include "Client.hpp"
 
 class Server {
 private:
@@ -16,6 +19,7 @@ private:
     const int _server_fd;
     struct sockaddr_in _server_addr;
     const int _kqueue_fd;
+    std::map<int, Client*> _clients;
 
     void initServerInfo();
     void connectNewClient();

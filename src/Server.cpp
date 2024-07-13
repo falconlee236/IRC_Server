@@ -24,7 +24,10 @@ Server::Server(int port, std::string password)
 Server::~Server() {
     close(_server_fd);
     close(_kqueue_fd);
-    // TODO: client 소켓 전부 close
+
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+        delete it->second;
+    }
 }
 
 void Server::initServerInfo() {
@@ -87,7 +90,8 @@ void Server::connectNewClient() {
     int client_port = ntohs(client_addr.sin_port);
     std::cout << "Client " << client_ip << ":" << client_port << " connected\n";
 
-    // TODO: client 저장해야 됨
+    Client *new_client = new Client(client_socket);
+    _clients.insert({client_socket, new_client});
 
     struct kevent change_event;
     EV_SET(&change_event, client_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
@@ -116,6 +120,10 @@ void Server::removeClient(int client_socket) {
     struct kevent change_event;
     EV_SET(&change_event, client_socket, EVFILT_READ, EV_DELETE, 0, 0, NULL);
     kevent(_kqueue_fd, &change_event, 1, NULL, 0, NULL);
-    close(client_socket);
-    // TODO: 저장된 client에서 해당 client 제거
+
+    std::map<int, Client*>::iterator it = _clients.find(client_socket);
+    if (it != _clients.end()) {
+        delete it->second;
+        _clients.erase(client_socket);
+    }
 }
