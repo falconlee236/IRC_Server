@@ -31,6 +31,8 @@ public:
     ~Server();
 
     void run();
+
+    void nick(Client *, const std::string &);
 };
 
 #endif
