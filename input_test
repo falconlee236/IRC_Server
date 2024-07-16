@@ -1,3 +1,6 @@
 CAP LS 302
 JOIN :
-CAP LS 302
+PASS 123
+NICK sang
+USER root root 127.0.0.1 :root
+QUIT
