@@ -110,6 +110,7 @@ void Server::handleClientEvent(struct kevent &event) {
         removeClient(client_socket);
         return;
     }
+    for (ssize_t i = 0; i < recv_byte; i++) std::cout << static_cast<int>(buffer[i]) << "\n";
 
     std::cout << "Received: " << buffer << "\n";
     std::string msg = "send: " + std::string(buffer);
