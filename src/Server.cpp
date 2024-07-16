@@ -14,6 +14,10 @@ Server::Server(int port, std::string password)
     }
 
     initServerInfo();
+
+    if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) < 0){
+        throw std::runtime_error("non blocking socket create failed");
+    }
     // client의 요청을 기다리기 시작
     if (listen(_server_fd, 5) < 0) {
         throw std::runtime_error("Listen failed");
