@@ -168,3 +168,17 @@ void Server::removeClient(int client_socket) {
         _clients.erase(client_socket);
     }
 }
+
+Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
+    throw std::runtime_error("Server(): consturctor is not allowed");
+}
+Server::Server(const Server& obj) : 
+        _port(obj._port), _password(obj._password), _server_fd(obj._server_fd), 
+        _server_addr(obj._server_addr), _kqueue_fd(obj._kqueue_fd), _clients(obj._clients){
+    throw std::runtime_error("Server(): copy consturctor is not allowed");
+}
+Server& Server::operator= (const Server& obj){
+    (void) obj;
+	throw std::runtime_error("Server(): operator= is not allowed");
+	return *this;
+}

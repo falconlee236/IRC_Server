@@ -29,8 +29,11 @@ private:
     void removeClient(int);
 
 public:
+    Server(void);
     Server(int, std::string);
     ~Server();
+    Server(const Server& obj);
+    Server& operator= (const Server& obj);
 
     void run();
 };
