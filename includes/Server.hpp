@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/event.h>
@@ -31,6 +32,9 @@ public:
     ~Server();
 
     void run();
+
+    void nick(Client *, const std::string &);
+    void user(Client *, const std::string &);
 };
 
 #endif
