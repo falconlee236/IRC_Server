@@ -20,6 +20,10 @@ private:
     std::string _nickname;
 
 public:
+    bool isPassConfirmed;
+    bool isNicknameSet;
+    bool isUserInfoSet;
+
     Client(void);
     Client(int client_fd, int client_port, std::string client_ip);
     ~Client();
@@ -28,6 +32,8 @@ public:
     const std::string& getNickname() const;
 
     void setNickname(const std::string&);
+
+    bool isRegistered() const;
 
     Client &operator<<(const std::string &data);
     Client &operator>>(std::string &data);
