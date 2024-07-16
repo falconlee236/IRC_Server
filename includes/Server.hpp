@@ -29,16 +29,19 @@ private:
     void handleClientEvent(struct kevent &);
     void removeClient(int);
 
+    bool isValidNickname(const std::string &nickname);
+    bool isDuplicateNickname(const std::string &nickname); 
+
+    void nick(Client *, const std::vector<std::string>);
+
 public:
     Server(void);
     Server(int, std::string);
     ~Server();
-    Server(const Server& obj);
-    Server& operator= (const Server& obj);
+    Server(const Server &obj);
+    Server& operator=(const Server &obj);
 
     void run();
-
-    void nick(Client *, const std::string &);
 };
 
 #endif

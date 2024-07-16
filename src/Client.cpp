@@ -5,7 +5,7 @@ Client::Client(int client_fd, int client_port, std::string client_ip)
     : _client_fd(client_fd),
       _client_port(client_port),
       _client_ip(client_ip),
-      _nickname("nick"),
+      _nickname("*"),
       isPassConfirmed(false),
       isNicknameSet(false),
       isUserInfoSet(false) {

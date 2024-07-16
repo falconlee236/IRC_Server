@@ -108,27 +108,29 @@ void Server::connectNewClient() {
 void Server::handleClientEvent(struct kevent &event) {
     int socket = event.ident;
     Client &client = *_clients[socket]; 
-    try{
+    try {
         // read data from client
         client << socket;
-    } catch (std::exception& e){
+    } catch (std::exception& e) {
         std::cerr << e.what() << "\n";
         removeClient(socket);
         return;
     }
 
     std::string line;
-    while (true){
+    while (true) {
         try {
             client >> line;
             std::cout << line << "\n";
             Message msg(line);
-            switch (msg.getCommand()) {
+            switch (msg.getCmdType()) {
                 case Message::CAP:
                     break;
                 case Message::PASS:
                     break;
                 case Message::NICK:
+                    nick(&client, msg.getParams());
+                    break;
                 case Message::USER:
                 case Message::QUIT:
                 case Message::JOIN:
@@ -143,12 +145,9 @@ void Server::handleClientEvent(struct kevent &event) {
                 case Message::PING:
                     break;
                 default:
-                    if (msg.getParams().empty())
-                        throw new std::runtime_error("empty parameter");
+                    client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
             }
-            std::cout << msg.getCommand() << "\n";
-            std::cout << msg.getParams() << "\n";
-        } catch(std::exception &e){
+        } catch(std::exception &e) {
             std::cerr << e.what() << "\n";
             break;
         }
@@ -172,13 +171,15 @@ void Server::removeClient(int client_socket) {
 Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
     throw std::runtime_error("Server(): consturctor is not allowed");
 }
+
 Server::Server(const Server& obj) : 
         _port(obj._port), _password(obj._password), _server_fd(obj._server_fd), 
-        _server_addr(obj._server_addr), _kqueue_fd(obj._kqueue_fd), _clients(obj._clients){
+        _server_addr(obj._server_addr), _kqueue_fd(obj._kqueue_fd), _clients(obj._clients) {
     throw std::runtime_error("Server(): copy consturctor is not allowed");
 }
+
 Server& Server::operator= (const Server& obj){
     (void) obj;
-	throw std::runtime_error("Server(): operator= is not allowed");
-	return *this;
+    throw std::runtime_error("Server(): operator= is not allowed");
+    return *this;
 }
