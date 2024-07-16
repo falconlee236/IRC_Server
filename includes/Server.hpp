@@ -11,6 +11,7 @@
 #include <map>
 
 #include "Client.hpp"
+#include "Message.hpp"
 #include "NumericReply.hpp"
 
 class Server {
@@ -29,8 +30,11 @@ private:
     void removeClient(int);
 
 public:
+    Server(void);
     Server(int, std::string);
     ~Server();
+    Server(const Server& obj);
+    Server& operator= (const Server& obj);
 
     void run();
 

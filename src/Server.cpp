@@ -121,13 +121,38 @@ void Server::handleClientEvent(struct kevent &event) {
     while (true){
         try {
             client >> line;
+            std::cout << line << "\n";
+            Message msg(line);
+            switch (msg.getCommand()) {
+                case Message::CAP:
+                    break;
+                case Message::PASS:
+                    break;
+                case Message::NICK:
+                case Message::USER:
+                case Message::QUIT:
+                case Message::JOIN:
+                    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
+                    break;
+                case Message::PART:
+                case Message::TOPIC:
+                case Message::MODE:
+                case Message::INVITE:
+                case Message::KICK:
+                case Message::PRIVMSG:
+                case Message::PING:
+                    break;
+                default:
+                    if (msg.getParams().empty())
+                        throw new std::runtime_error("empty parameter");
+            }
+            std::cout << msg.getCommand() << "\n";
+            std::cout << msg.getParams() << "\n";
         } catch(std::exception &e){
             std::cerr << e.what() << "\n";
             break;
         }
-        std::cout << line << "\n\n";
     }
-    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
     // write data to client
     client >> socket;
 }
@@ -142,4 +167,18 @@ void Server::removeClient(int client_socket) {
         delete it->second;
         _clients.erase(client_socket);
     }
+}
+
+Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
+    throw std::runtime_error("Server(): consturctor is not allowed");
+}
+Server::Server(const Server& obj) : 
+        _port(obj._port), _password(obj._password), _server_fd(obj._server_fd), 
+        _server_addr(obj._server_addr), _kqueue_fd(obj._kqueue_fd), _clients(obj._clients){
+    throw std::runtime_error("Server(): copy consturctor is not allowed");
+}
+Server& Server::operator= (const Server& obj){
+    (void) obj;
+	throw std::runtime_error("Server(): operator= is not allowed");
+	return *this;
 }

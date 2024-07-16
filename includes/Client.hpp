@@ -27,6 +27,8 @@ public:
     Client(void);
     Client(int client_fd, int client_port, std::string client_ip);
     ~Client();
+    Client(const Client& obj);
+    Client& operator= (const Client& obj);
 
     int getSocket() const;
     const std::string& getNickname() const;

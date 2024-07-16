@@ -1,7 +1,5 @@
 #include "../includes/Client.hpp"
 
-Client::Client(void) 
-    : _client_fd(-1), _client_port(-1), _client_ip("") {}
 
 Client::Client(int client_fd, int client_port, std::string client_ip) 
     : _client_fd(client_fd),
@@ -88,4 +86,17 @@ const char* Client::CannotFoundCRLFException::what(void) const throw(){
 
 const char* Client::LineTooLongException::what(void) const throw(){
     return "Command Line is Too long";
+}
+
+Client::Client(void) : _client_fd(-1), _client_port(-1), _client_ip("") {
+    throw std::runtime_error("Client(): consturctor is not allowed");
+}
+
+Client::Client(const Client& obj) : _client_fd(obj._client_fd), _client_port(obj._client_port), _client_ip(obj._client_ip){
+    throw std::runtime_error("Client(): copy consturctor is not allowed");
+}
+Client& Client::operator= (const Client& obj){
+    (void) obj;
+    throw std::runtime_error("Client(): operator= is not allowed");
+    return *this;
 }
