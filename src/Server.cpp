@@ -14,6 +14,10 @@ Server::Server(int port, std::string password)
     }
 
     initServerInfo();
+
+    if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) < 0){
+        throw std::runtime_error("non blocking socket create failed");
+    }
     // client의 요청을 기다리기 시작
     if (listen(_server_fd, 5) < 0) {
         throw std::runtime_error("Listen failed");
@@ -90,8 +94,8 @@ void Server::connectNewClient() {
     int client_port = ntohs(client_addr.sin_port);
     std::cout << "Client " << client_ip << ":" << client_port << " connected\n";
 
-    Client *new_client = new Client(client_socket);
-    _clients.insert({client_socket, new_client});
+    Client *new_client = new Client(client_socket, client_port, client_ip);
+    _clients[client_socket] = new_client;
 
     struct kevent change_event;
     EV_SET(&change_event, client_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
@@ -102,18 +106,30 @@ void Server::connectNewClient() {
 }
 
 void Server::handleClientEvent(struct kevent &event) {
-    int client_socket = event.ident;
-    char buffer[1024] = {0};
-    ssize_t recv_byte = recv(client_socket, buffer, sizeof(buffer), 0);
-    if (recv_byte <= 0) {
-        std::cout << "Client disconnected\n";
-        removeClient(client_socket);
+    int socket = event.ident;
+    Client &client = *_clients[socket]; 
+    try{
+        // read data from client
+        client << socket;
+    } catch (std::exception& e){
+        std::cerr << e.what() << "\n";
+        removeClient(socket);
         return;
     }
 
-    std::cout << "Received: " << buffer << "\n";
-    std::string msg = "send: " + std::string(buffer);
-    send(client_socket, msg.c_str(), msg.size(), 0);
+    std::string line;
+    while (true){
+        try {
+            client >> line;
+        } catch(std::exception &e){
+            std::cerr << e.what() << "\n";
+            break;
+        }
+        std::cout << line << "\n\n";
+    }
+    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
+    // write data to client
+    client >> socket;
 }
 
 void Server::removeClient(int client_socket) {
