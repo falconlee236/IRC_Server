@@ -1,6 +1,6 @@
 #include "../includes/Client.hpp"
 
-Client::Client(int fd) : _socket(fd), _nickname("a") {}
+Client::Client(int fd) : _socket(fd), _nickname("nick") {}
 
 Client::~Client() {
     close(_socket);

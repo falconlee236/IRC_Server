@@ -10,6 +10,7 @@
 #include <map>
 
 #include "Client.hpp"
+#include "NumericReply.hpp"
 
 class Server {
 private:

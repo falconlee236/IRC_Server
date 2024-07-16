@@ -6,23 +6,23 @@ void Server::nick(Client *client, const std::string &nickname) {
     // TODO: pass 확인
 
     if (nickname.empty()) {
-        // TODO: 431 ERR_NONICKNAMEGIVEN
-        std::string response = "431 :No nickname given\r\n";
+        // 431 ERR_NONICKNAMEGIVEN ":No nickname given"
+        std::string response = ERR_NONICKNAMEGIVEN_431(client->getNickname());
         send(client->getSocket(), response.c_str(), response.size(), 0);
         return;
     }
 
     if (!isValidNickname(nickname)) {
-        // TODO: 432 ERR_ERRONEUSNICKNAME
-        std::string response = "432 " + client->getNickname() + ":Erroneus nickname\r\n";
+        // 432 ERR_ERRONEUSNICKNAME "<nick> :Erroneus nickname"
+        std::string response = ERR_ERRONEUSNICKNAME_432(client->getNickname(), nickname);
         send(client->getSocket(), response.c_str(), response.size(), 0);
         return;
     }
 
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         if (it->second->getNickname() == nickname) {
-            // TODO: 433 ERR_NICKNAMEINUSE
-            std::string response = "433 " + nickname + " :Nickname is already in use\r\n";
+            // 433 ERR_NICKNAMEINUSE "<nick> :Nickname is already in use"
+            std::string response = ERR_NICKNAMEINUSE_433(client->getNickname(), nickname);
             send(client->getSocket(), response.c_str(), response.size(), 0);
             return;
         }
@@ -37,12 +37,13 @@ bool isValidNickname(const std::string &nickname) {
     if (nickname.length() > 9) {
         return false;
     }
-    if ('0' <= nickname[0] || nickname[0] <= '9') {
+
+    if ('0' <= nickname[0] && nickname[0] <= '9') {
         return false;
     }
 
     for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); ++it) {
-        if (!(isalnum(*it) || isspecial(*it))) {
+        if (!(isalnum(*it) || '_')) {
             return false;
         }
     }
