@@ -91,7 +91,7 @@ void Server::connectNewClient() {
     std::cout << "Client " << client_ip << ":" << client_port << " connected\n";
 
     Client *new_client = new Client(client_socket);
-    _clients.insert({client_socket, new_client});
+    _clients[client_socket] =  new_client;
 
     struct kevent change_event;
     EV_SET(&change_event, client_socket, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
