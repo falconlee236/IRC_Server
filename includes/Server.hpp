@@ -11,6 +11,7 @@
 #include <map>
 
 #include "Client.hpp"
+#include "Message.hpp"
 
 class Server {
 private:

@@ -121,13 +121,38 @@ void Server::handleClientEvent(struct kevent &event) {
     while (true){
         try {
             client >> line;
+            std::cout << line << "\n";
+            Message msg(line);
+            switch (msg.getCommand()) {
+                case Message::CAP:
+                    break;
+                case Message::PASS:
+                    break;
+                case Message::NICK:
+                case Message::USER:
+                case Message::QUIT:
+                case Message::JOIN:
+                    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
+                    break;
+                case Message::PART:
+                case Message::TOPIC:
+                case Message::MODE:
+                case Message::INVITE:
+                case Message::KICK:
+                case Message::PRIVMSG:
+                case Message::PING:
+                    break;
+                default:
+                    if (msg.getParams().empty())
+                        throw new std::runtime_error("empty parameter");
+            }
+            std::cout << msg.getCommand() << "\n";
+            std::cout << msg.getParams() << "\n";
         } catch(std::exception &e){
             std::cerr << e.what() << "\n";
             break;
         }
-        std::cout << line << "\n\n";
     }
-    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
     // write data to client
     client >> socket;
 }
