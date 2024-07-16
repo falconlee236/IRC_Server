@@ -90,7 +90,7 @@ void Server::connectNewClient() {
     int client_port = ntohs(client_addr.sin_port);
     std::cout << "Client " << client_ip << ":" << client_port << " connected\n";
 
-    Client *new_client = new Client(client_socket);
+    Client *new_client = new Client(client_socket, client_port, client_ip);
     _clients[client_socket] = new_client;
 
     struct kevent change_event;
