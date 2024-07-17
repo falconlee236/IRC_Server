@@ -35,6 +35,7 @@ void Client::setUserInfo(const std::string &username, const std::string &hostnam
     _hostname = hostname;
     _servername = servername;
     _realname = realname;
+    isUserInfoSet = true;
 }
 
 bool Client::isRegistered() const {
