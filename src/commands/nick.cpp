@@ -1,12 +1,10 @@
 #include "../../includes/Server.hpp"
 
 void Server::nick(Client *client, const std::vector<std::string> params) {
-    // TODO: pass 확인
-    // if (!client->isPassConfirmed) {
-    //     // 451 ERR_NOTREGISTERED ":You have not registered"
-    //     *client << ERR_NOTREGISTERED_451(client->getNickname());
-    //     return;
-    // }
+    if (!client->isPassConfirmed) {
+        *client << ERR_NOTREGISTERED_451(client->getNickname());
+        return;
+    }
 
     if (params.empty()) {
         *client << ERR_NONICKNAMEGIVEN_431(client->getNickname());

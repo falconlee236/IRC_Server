@@ -127,6 +127,7 @@ void Server::handleClientEvent(struct kevent &event) {
                 case Message::CAP:
                     break;
                 case Message::PASS:
+                    pass(&client, msg.getParams());
                     break;
                 case Message::NICK:
                     nick(&client, msg.getParams());
@@ -147,10 +148,12 @@ void Server::handleClientEvent(struct kevent &event) {
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
             }
-        } catch(std::exception &e) {
-            std::cerr << e.what() << "\n";
+        }catch (Client::CannotFoundCRLFException &e){
             break;
-        }
+        }catch(std::exception &e) {
+            std::cout << e.what() << "\n";
+            break;
+        } 
     }
     // write data to client
     client >> socket;
