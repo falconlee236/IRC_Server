@@ -8,7 +8,7 @@
 #define ERROR_REPLY(number, target, message) \
     (std::to_string(number) + " " + target + " " + message + "\r\n")
 #define NORMAL_REPLY(number, target, message) \
-    (std::to_string(number) + " " + target + " " + message + "\r\n")
+    ((std::stringstream() << std::setw(3) << std::setfill('0') << number).str() + " " + target + " " + message + "\r\n")
 
 // NOTE - REGISTER
 #define RPL_WELCOME_001(client) \
