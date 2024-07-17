@@ -42,7 +42,7 @@ bool Server::isValidNickname(const std::string &nickname) {
         return false;
     }
     for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++) {
-        if (!isalnum(*it) && *it != '_') {
+        if (!isalnum(*it) && !isspecial(*it)) {
             return false;
         }
     }
