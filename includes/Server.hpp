@@ -8,9 +8,12 @@
 #include <sys/event.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <map>
 
 #include "Client.hpp"
+#include "Message.hpp"
+#include "NumericReply.hpp"
 
 class Server {
 private:
@@ -27,9 +30,17 @@ private:
     void handleClientEvent(struct kevent &);
     void removeClient(int);
 
+    bool isValidNickname(const std::string &nickname);
+    bool isDuplicateNickname(const std::string &nickname); 
+
+    void nick(Client *, const std::vector<std::string>);
+
 public:
+    Server(void);
     Server(int, std::string);
     ~Server();
+    Server(const Server &obj);
+    Server& operator=(const Server &obj);
 
     void run();
 
