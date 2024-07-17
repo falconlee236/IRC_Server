@@ -34,6 +34,7 @@ private:
 
     void nick(Client *, const std::vector<std::string>);
     void pass(Client *, const std::vector<std::string>);
+    void quit(Client *, const std::vector<std::string>);
 
 public:
     Server(void);
