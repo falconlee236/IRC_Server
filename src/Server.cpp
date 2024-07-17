@@ -184,9 +184,9 @@ void Server::registerClient(Client *client) {
 
     if (client->isPassConfirmed && client->isNicknameSet && client->isUserInfoSet) {
         client->isRegistered = true;
-        // *client << RPL_WELCOME_001(*client);
-        // *client << RPL_YOURHOST_002(*client);
-        // *client << RPL_CREATED_003(*client, _created_time);
+        *client << RPL_WELCOME_001(*client);
+        *client << RPL_YOURHOST_002(*client);
+        *client << RPL_CREATED_003(*client, _created_time);
     }
 }
 

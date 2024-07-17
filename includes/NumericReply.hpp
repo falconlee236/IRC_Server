@@ -2,11 +2,22 @@
 #define NUMERICREPLY_HPP
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #define ERROR_REPLY(number, target, message) \
     (std::to_string(number) + " " + target + " " + message + "\r\n")
 #define NORMAL_REPLY(number, target, message) \
     (std::to_string(number) + " " + target + " " + message + "\r\n")
+
+// NOTE - REGISTER
+#define RPL_WELCOME_001(client) \
+    NORMAL_REPLY(001, (client).getNickname(), ":Welcome to the Internet Relay Network " \
+        + (client).getNickname() + "!" + (client).getUsername() + "@" + (client).getHostname())
+#define RPL_YOURHOST_002(client) \
+    NORMAL_REPLY(002, (client).getNickname(), ":Your host is " + (client).getServername() + " running version ircserv1.0")
+#define RPL_CREATED_003(client, date) \
+    NORMAL_REPLY(003, (client).getNickname(), ":This server was created " + date)
 
 // NOTE - PASS_REPLIES
 #define ERR_ALREADYREGISTRED_462(target) ERROR_REPLY(462, target, ":You may not reregister")
