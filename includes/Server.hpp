@@ -24,11 +24,13 @@ private:
     struct sockaddr_in _server_addr;
     const int _kqueue_fd;
     std::map<int, Client*> _clients;
+    std::string _created_time;
 
     void initServerInfo();
     void connectNewClient();
     void handleClientEvent(struct kevent &);
     void removeClient(int);
+    void registerClient(Client *);
 
     bool isValidNickname(const std::string &);
     bool isDuplicateNickname(const std::string &); 
