@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/event.h>
@@ -34,6 +35,7 @@ private:
 
     void nick(Client *, const std::vector<std::string>);
     void pass(Client *, const std::vector<std::string>);
+    void user(Client *, const std::vector<std::string>);
 
 public:
     Server(void);
@@ -42,7 +44,7 @@ public:
     Server(const Server &obj);
     Server& operator=(const Server &obj);
 
-    void run(void);
+    void run();
 };
 
 #endif

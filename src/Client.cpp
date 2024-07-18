@@ -1,6 +1,5 @@
 #include "../includes/Client.hpp"
 
-
 Client::Client(int client_fd, int client_port, std::string client_ip) 
     : _client_fd(client_fd),
       _client_port(client_port),
@@ -25,9 +24,18 @@ int Client::getSocket() const {
 const std::string& Client::getNickname() const {
     return _nickname;
 }
+
 void Client::setNickname(const std::string& nickname) {
     _nickname = nickname;
     isNicknameSet = true;
+}
+
+void Client::setUserInfo(const std::string &username, const std::string &hostname, const std::string &servername, const std::string &realname) {
+    _username = username;
+    _hostname = hostname;
+    _servername = servername;
+    _realname = realname;
+    isUserInfoSet = true;
 }
 
 bool Client::isRegistered() const {

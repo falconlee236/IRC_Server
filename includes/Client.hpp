@@ -17,7 +17,12 @@ private:
     const std::string _client_ip;
     std::string _read_data;
     std::string _write_data;
+
     std::string _nickname;
+    std::string _username;
+    std::string _hostname;
+    std::string _servername;
+    std::string _realname;
 
 public:
     bool isPassConfirmed;
@@ -33,7 +38,8 @@ public:
     int getSocket() const;
     const std::string& getNickname() const;
 
-    void setNickname(const std::string&);
+    void setNickname(const std::string &);
+    void setUserInfo(const std::string &, const std::string &, const std::string &, const std::string &);
 
     bool isRegistered() const;
 
