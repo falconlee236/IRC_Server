@@ -2,9 +2,7 @@
 
 Channel::Channel(std::string name) : _name(name){}
 
-Channel::~Channel(){
-
-}
+Channel::~Channel(){}
 
 
 Channel::Channel(void) : _name(""){
