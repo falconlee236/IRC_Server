@@ -2,14 +2,17 @@
 #define __CHANNEL_HPP__
 
 #include "Client.hpp"
+#include <bitset>
+#include <set>
+#include <map>
 
 //TODO - MODE는 i, t, k, l, o 구현 필요
 /*
 //SECTION - mode 파라미터 설명
 i: channel을 invite only로 만든다 (INVITE command 참고)
-k: channel에 key (password)를 설정한다 (default는 none)
-t: topic을 설정 가능/불가능 하게 만든다 (TOPIC command 참고)
 l: 최대 channel 수를 설정한다.
+t: topic을 설정 가능/불가능 하게 만든다 (TOPIC command 참고)
+k: channel에 key (password)를 설정한다 (default는 none)
 o: channel operator(관리자)권한을 주거나(give) 뺏는다(take).
 //!SECTION
 */
@@ -24,6 +27,13 @@ private:
 	*/
 	const std::string _name;
 	std::string _key; //NOTE - Channel password
+	enum _ChannelFlag{
+		INVITE_ONLY, //LINK - i mode flag
+		SET_USER_LIMIT, //LINK - l mode flag
+		SET_TOPIC, //LINK - t mode flag
+		SET_KEY //LINK - k mode flag
+	};
+	
 public:
 	Channel(std::string);
 	~Channel();
