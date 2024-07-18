@@ -36,6 +36,7 @@ private:
     void nick(Client *, const std::vector<std::string>);
     void pass(Client *, const std::vector<std::string>);
     void user(Client *, const std::vector<std::string>);
+    void mode(Client *, const std::vector<std::string>);
 
 public:
     Server(void);
