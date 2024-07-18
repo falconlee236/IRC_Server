@@ -21,6 +21,17 @@
 
 #define RPL_NICKNAMECHANGE(target, oldNick) (":" + oldNick + " NICK " + target + "\r\n")
 
+//NOTE - MODE_REPLIES
+//TODO - reply 가 좀 많이 부족한것 같은데, 이것 변경해야함.
+#define ERR_BADCHANMASK_476(client, channel)              \
+    ("476 " + (client).get_nickname() + " " + (channel) + \
+     " :Bad Channel Mask\r\n")
+#define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
+
+#define RPL_BRDCAST_MODE(client, channel, mode, params)                      \
+    (":" + CLIENT_SOURCE((client)) + " MODE " + (channel).get_name() + " " + \
+     (mode) + " " + (params) + "\r\n")
+
 //NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 #endif
