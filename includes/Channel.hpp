@@ -36,6 +36,7 @@ private:
 	std::set<Client *> _clients;
 	std::set<Client *> _operators;
 
+	//TODO - _max_client 사용하기
 	//SECTION - l mode flag variables
 	// std::size_t _max_clients;
 	//!SECTION
@@ -44,6 +45,7 @@ private:
 	std::set<Client *> _guests;
 	//!SECTION
 
+	//TODO - topic setter, set time 사용하기
 	//SECTION - t mode flag variables
 	//NOTE - Topic set by sang [root@127.0.0.1] [Thu Jul 18 16:25:46 2024]
 	std::string _topic;
