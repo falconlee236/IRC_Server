@@ -133,6 +133,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     nick(&client, msg.getParams());
                     break;
                 case Message::USER:
+                    user(&client, msg.getParams());
+                    break;
                 case Message::QUIT:
                     quit(&client, msg.getParams());
                     break;

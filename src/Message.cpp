@@ -10,7 +10,7 @@ const std::string Message::_commandList[Message::CMD_SIZE + 1] = {
 
 Message::Message() : _cmd_type(Message::NONE), _cmd(), _params() {}
 
-Message::Message(std::string str) : _cmd(), _params() {
+Message::Message(std::string str) : _cmd_type(Message::NONE), _cmd(), _params() {
     std::vector<std::string> tokens = splitMessage(str);
     if (!tokens.empty()) {
         _cmd_type = findCommand(tokens[0]);

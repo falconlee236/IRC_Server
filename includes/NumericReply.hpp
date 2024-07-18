@@ -19,8 +19,8 @@
 #define ERR_NICKNAMEINUSE_433(target, invalidNick) ERROR_REPLY(433, target, invalidNick + " :Nickname is already in use")
 #define ERR_NOTREGISTERED_451(target) ERROR_REPLY(451, target, ":You have not registered")
 
-#define RPL_NICKNAMECHANGE(target, oldNick) (":" + oldNick + " NICK " + target)
+#define RPL_NICKNAMECHANGE(target, oldNick) (":" + oldNick + " NICK " + target + "\r\n")
 
 //NOTE - ERR_REPLIES
-#define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, " :Not enough parameters")
+#define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 #endif
