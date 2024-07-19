@@ -34,8 +34,13 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         return;
     }
     //TODO - 482 에러 필요 (not channel operator)
-    if (channel->checkChannelOperator(client)){
+    if (!channel->checkChannelOperator(client)){
         *client << "We need a 402 not channel operator\r\n";
+        return;
+    }
+
+    if (!channel->setChannelFlag(params[1])){
+        *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getChannelName());
         return;
     }
 }
