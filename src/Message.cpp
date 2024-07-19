@@ -39,6 +39,17 @@ std::vector<std::string> Message::splitMessage(const std::string &str) {
     return tokens;
 }
 
+std::vector<std::string> Message::split(const std::string &str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream iss(str);
+
+    while (std::getline(iss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
 Message::e_cmd Message::findCommand(const std::string &cmd){
     std::string tmp_cmd(cmd);
     for(size_t i = 0; i <= tmp_cmd.length(); i++){
