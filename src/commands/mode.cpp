@@ -23,8 +23,29 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << ERR_NOTREGISTERED_451(client->getNickname());
         return;
     }
-    if (params.size() < 3){
+    if (params.size() < 2){
         *client << ERR_NEEDMOREPARAMS_461(client->getNickname());
         return;
     }
+    //TODO - cannot found channel error 필요할듯
+    Channel *channel = getValidChannel(params[0]);
+    if (channel == false){
+        *client << ERR_UMODEUNKNOWNFLAG_501(client->getNickname());
+        return;
+    }
+    //TODO - 482 에러 필요 (not channel operator)
+    if (channel->checkChannelOperator(client)){
+        *client << "We need a 402 not channel operator\r\n";
+        return;
+    }
+}
+
+Channel *Server::getValidChannel(const std::string &name){
+    // TODO - Channel list가 필요함
+    // STUB - 임시 채널 생성
+    (void)name;
+    Channel *tmp_channel = new Channel(name);
+    return tmp_channel;
+    // STUB - channel이 없는 경우
+    return NULL;
 }
