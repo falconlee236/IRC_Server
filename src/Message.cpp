@@ -40,8 +40,12 @@ std::vector<std::string> Message::splitMessage(const std::string &str) {
 }
 
 Message::e_cmd Message::findCommand(const std::string &cmd){
+    std::string tmp_cmd(cmd);
+    for(size_t i = 0; i <= tmp_cmd.length(); i++){
+        tmp_cmd[i] = std::toupper(tmp_cmd[i]);
+    }
     for(int i = 1; i <= Message::CMD_SIZE; i++) {
-        if (cmd == _commandList[i]) {
+        if (tmp_cmd == _commandList[i]) {
             return static_cast<e_cmd>(i);
         }
     }
