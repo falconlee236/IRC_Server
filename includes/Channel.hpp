@@ -34,7 +34,9 @@ private:
 	};
 	std::bitset<4> _flags;
 	std::set<Client *> _clients;
+	std::map<std::string, Client *> _clients_map;
 	std::set<Client *> _operators;
+	std::map<std::string, Client *> _operators_map;
 	enum _FlagOp{
 		ADD,
 		REMOVE
@@ -47,6 +49,7 @@ private:
 
 	//SECTION - i mode flag variables
 	std::set<Client *> _guests;
+	std::map<std::string, Client *> _guests_map;
 	//!SECTION
 
 	//TODO - topic setter, set time 사용하기
@@ -70,8 +73,8 @@ public:
 	const std::string& getChannelName(void);
 
 private:
-	void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string>, int);
-	void setOperator(enum _FlagOp, const std::vector<std::string>, int);
+	void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string> &, int);
+	void setOperator(enum _FlagOp, const std::vector<std::string> &, int);
 
 public: 
 	Channel(void);
