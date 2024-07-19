@@ -61,6 +61,9 @@ public:
 	Channel(std::string);
 	~Channel();
 	bool checkChannelOperator(Client *);
+	bool setChannelFlag(const std::string &);
+
+	const std::string& getChannelName(void);
 
 public:
 	Channel(void);
