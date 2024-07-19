@@ -60,6 +60,7 @@ private:
 public:
 	Channel(std::string);
 	~Channel();
+	bool checkChannelOperator(Client *);
 
 public:
 	Channel(void);
