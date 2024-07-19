@@ -20,20 +20,20 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 				while (i < flags_str.length()){
 					switch (flags_str[i]){
 						case 'l':
-							setFlag(_FlagOp::ADD, _ChannelFlag::SET_USER_LIMIT, params, cnt);
+							setFlag(Channel::ADD, Channel::SET_USER_LIMIT, params, cnt);
 							break;
 						case 'i':
-							setFlag(_FlagOp::ADD, _ChannelFlag::INVITE_ONLY, params, cnt);
+							setFlag(Channel::ADD, Channel::INVITE_ONLY, params, cnt);
 							break;
 						case 't':
-							setFlag(_FlagOp::ADD, _ChannelFlag::SET_TOPIC, params, cnt);
+							setFlag(Channel::ADD, Channel::SET_TOPIC, params, cnt);
 							cnt--;
 							break;
 						case 'k':
-							setFlag(_FlagOp::ADD, _ChannelFlag::SET_KEY, params, cnt);
+							setFlag(Channel::ADD, Channel::SET_KEY, params, cnt);
 							break;
 						case 'o':
-							setOperator(_FlagOp::ADD, params, cnt);
+							setOperator(Channel::ADD, params, cnt);
 							break;
 						default:
 							return false;
@@ -46,20 +46,20 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 				while (i < flags_str.length()){
 					switch (flags_str[i]){
 					case 'l':
-						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_USER_LIMIT, params, cnt);
+						setFlag(Channel::REMOVE, Channel::SET_USER_LIMIT, params, cnt);
 						break;
 					case 'i':
-						setFlag(_FlagOp::REMOVE, _ChannelFlag::INVITE_ONLY, params, cnt);
+						setFlag(Channel::REMOVE, Channel::INVITE_ONLY, params, cnt);
 						break;
 					case 't':
-						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_TOPIC, params, cnt);
+						setFlag(Channel::REMOVE, Channel::SET_TOPIC, params, cnt);
 						cnt--;
 						break;
 					case 'k':
-						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_KEY, params, cnt);
+						setFlag(Channel::REMOVE, Channel::SET_KEY, params, cnt);
 						break;
 					case 'o':
-						setOperator(_FlagOp::REMOVE, params, cnt);
+						setOperator(Channel::REMOVE, params, cnt);
 						break;
 					default:
 						return false;
