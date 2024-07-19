@@ -10,8 +10,68 @@ bool Channel::checkChannelOperator(Client *client){
 	return _operators.find(client) != _operators.end() ? true : false;
 }
 
-bool Channel::setChannelFlag(const std::string &flag_str){
-	(void)flag_str;
+bool Channel::setChannelFlag(const std::vector<std::string> &params){
+	std::string flags_str = params[1];
+	// NOTE - +t-o+lk test 30 11
+	try{
+		for(size_t i = 0, cnt = 2; i < flags_str.length(); i++){
+			if (flags_str[i] == '+'){
+				i++;
+				while (i < flags_str.length()){
+					switch (flags_str[i]){
+						case 'l':
+							setFlag(_FlagOp::ADD, _ChannelFlag::SET_USER_LIMIT, params, cnt);
+							break;
+						case 'i':
+							setFlag(_FlagOp::ADD, _ChannelFlag::INVITE_ONLY, params, cnt);
+							break;
+						case 't':
+							setFlag(_FlagOp::ADD, _ChannelFlag::SET_TOPIC, params, cnt);
+							cnt--;
+							break;
+						case 'k':
+							setFlag(_FlagOp::ADD, _ChannelFlag::SET_KEY, params, cnt);
+							break;
+						case 'o':
+							setOperator(_FlagOp::ADD, params, cnt);
+							break;
+						default:
+							return false;
+					}
+					cnt++;
+					i++;
+				}
+			} else if (flags_str[i] == '-'){
+				i++;
+				while (i < flags_str.length()){
+					switch (flags_str[i]){
+					case 'l':
+						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_USER_LIMIT, params, cnt);
+						break;
+					case 'i':
+						setFlag(_FlagOp::REMOVE, _ChannelFlag::INVITE_ONLY, params, cnt);
+						break;
+					case 't':
+						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_TOPIC, params, cnt);
+						cnt--;
+						break;
+					case 'k':
+						setFlag(_FlagOp::REMOVE, _ChannelFlag::SET_KEY, params, cnt);
+						break;
+					case 'o':
+						setOperator(_FlagOp::REMOVE, params, cnt);
+						break;
+					default:
+						return false;
+					}
+					cnt++;
+					i++;
+				}
+			}
+		}
+	} catch (std::exception &e){
+		return false;
+	}
 	return true;
 }
 
