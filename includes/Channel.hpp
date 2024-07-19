@@ -35,6 +35,10 @@ private:
 	std::bitset<4> _flags;
 	std::set<Client *> _clients;
 	std::set<Client *> _operators;
+	enum _FlagOp{
+		ADD,
+		REMOVE
+	};
 
 	//TODO - _max_client 사용하기
 	//SECTION - l mode flag variables
@@ -61,11 +65,15 @@ public:
 	Channel(std::string);
 	~Channel();
 	bool checkChannelOperator(Client *);
-	bool setChannelFlag(const std::string &);
+	bool setChannelFlag(const std::vector<std::string> &);
 
 	const std::string& getChannelName(void);
 
-public:
+private:
+	void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string>, int);
+	void setOperator(enum _FlagOp, const std::vector<std::string>, int);
+
+public: 
 	Channel(void);
 	Channel(const Channel &obj);
 	Channel& operator=(const Channel &obj);
