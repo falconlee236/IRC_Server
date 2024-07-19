@@ -10,6 +10,16 @@ bool Channel::checkChannelOperator(Client *client){
 	return _operators.find(client) != _operators.end() ? true : false;
 }
 
+bool Channel::setChannelFlag(const std::string &flag_str){
+	(void)flag_str;
+	return true;
+}
+
+const std::string& Channel::getChannelName(void){
+	return this->_name;
+}
+
+
 Channel::Channel(void) : _name(""){
 	throw std::runtime_error("Channel(): consturctor is not allowed");
 }
