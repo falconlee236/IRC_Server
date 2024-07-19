@@ -13,6 +13,7 @@
 
 #include "Client.hpp"
 #include "Message.hpp"
+#include "Channel.hpp"
 #include "NumericReply.hpp"
 
 class Server {
@@ -31,6 +32,8 @@ private:
     void handleClientEvent(struct kevent &);
     void removeClient(int);
     void registerClient(Client *);
+
+    Channel* getValidChannel(const std::string &);
 
     bool isValidNickname(const std::string &);
     bool isDuplicateNickname(const std::string &); 
