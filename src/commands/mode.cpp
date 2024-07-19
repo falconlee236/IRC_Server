@@ -39,7 +39,7 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         return;
     }
 
-    if (!channel->setChannelFlag(params[1])){
+    if (!channel->setChannelFlag(params)){
         *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getChannelName());
         return;
     }
