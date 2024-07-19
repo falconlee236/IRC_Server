@@ -148,6 +148,8 @@ void Server::handleClientEvent(struct kevent &event) {
                 case Message::PART:
                 case Message::TOPIC:
                 case Message::MODE:
+                    mode(&client, msg.getParams());
+                    break;
                 case Message::INVITE:
                 case Message::KICK:
                 case Message::PRIVMSG:
@@ -192,7 +194,8 @@ void Server::registerClient(Client *client) {
     }
 }
 
-Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
+
+Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0){
     throw std::runtime_error("Server(): consturctor is not allowed");
 }
 
