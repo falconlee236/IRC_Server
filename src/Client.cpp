@@ -4,10 +4,11 @@ Client::Client(int client_fd, int client_port, std::string client_ip)
     : _client_fd(client_fd),
       _client_port(client_port),
       _client_ip(client_ip),
-      _nickname("*"),
+      _nickname("nick"),
       isPassConfirmed(false),
       isNicknameSet(false),
-      isUserInfoSet(false) {
+      isUserInfoSet(false),
+      isRegistered(false) {
     (void) _client_fd;
     (void) _client_port;
     (void) _client_ip;
@@ -24,6 +25,18 @@ int Client::getSocket() const {
 const std::string& Client::getNickname() const {
     return _nickname;
 }
+const std::string& Client::getUsername() const {
+    return _username;
+}
+const std::string& Client::getHostname() const {
+    return _hostname;
+}
+const std::string& Client::getServername() const {
+    return _servername;
+}
+const std::string& Client::getRealname() const {
+    return _realname;
+}
 
 void Client::setNickname(const std::string& nickname) {
     _nickname = nickname;
@@ -36,10 +49,6 @@ void Client::setUserInfo(const std::string &username, const std::string &hostnam
     _servername = servername;
     _realname = realname;
     isUserInfoSet = true;
-}
-
-bool Client::isRegistered() const {
-    return isPassConfirmed && isNicknameSet && isUserInfoSet;
 }
 
 // read from client socket

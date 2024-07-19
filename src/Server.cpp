@@ -22,6 +22,10 @@ Server::Server(int port, std::string password)
     if (listen(_server_fd, 5) < 0) {
         throw std::runtime_error("Listen failed");
     }
+
+    time_t now = time(0);
+    _created_time = asctime(gmtime(&now));
+
     std::cout << "IRC server is running on port: " << _port << "\n";
 }
 
@@ -136,6 +140,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     user(&client, msg.getParams());
                     break;
                 case Message::QUIT:
+                    quit(&client, msg.getParams());
+                    break;
                 case Message::JOIN:
                     client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
                     break;
@@ -170,6 +176,19 @@ void Server::removeClient(int client_socket) {
     if (it != _clients.end()) {
         delete it->second;
         _clients.erase(client_socket);
+    }
+}
+
+void Server::registerClient(Client *client) {
+    if (client->isRegistered) {
+        return;
+    }
+
+    if (client->isPassConfirmed && client->isNicknameSet && client->isUserInfoSet) {
+        client->isRegistered = true;
+        *client << RPL_WELCOME_001(*client);
+        *client << RPL_YOURHOST_002(*client);
+        *client << RPL_CREATED_003(*client, _created_time);
     }
 }
 
