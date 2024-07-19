@@ -6,7 +6,7 @@ void Server::user(Client *client, const std::vector<std::string> params) {
         return;
     }
 
-    if (client->isRegistered()) {
+    if (client->isRegistered) {
         *client << ERR_ALREADYREGISTRED_462(client->getNickname());
         return;
     }
@@ -25,5 +25,5 @@ void Server::user(Client *client, const std::vector<std::string> params) {
     }
 
     client->setUserInfo(params[0], params[1], params[2], realname);
-    // TODO: register
+    registerClient(client);
 }

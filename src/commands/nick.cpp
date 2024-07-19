@@ -22,13 +22,13 @@ void Server::nick(Client *client, const std::vector<std::string> params) {
     }
 
     // 기존에 register 되어 있었던 client인 경우
-    if (client->isRegistered()) {
+    if (client->isRegistered) {
         std::string old_nickname = client->getNickname();
         client->setNickname(nickname);
         *client << RPL_NICKNAMECHANGE(client->getNickname(), old_nickname);
     } else {
         client->setNickname(nickname);
-        // TODO: register
+        registerClient(client);
     }
 }
 

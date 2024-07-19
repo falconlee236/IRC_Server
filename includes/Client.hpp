@@ -28,6 +28,7 @@ public:
     bool isPassConfirmed;
     bool isNicknameSet;
     bool isUserInfoSet;
+    bool isRegistered;
 
     Client(void);
     Client(int client_fd, int client_port, std::string client_ip);
@@ -37,11 +38,13 @@ public:
 
     int getSocket() const;
     const std::string& getNickname() const;
+    const std::string& getUsername() const;
+    const std::string& getHostname() const;
+    const std::string& getServername() const;
+    const std::string& getRealname() const;
 
     void setNickname(const std::string &);
     void setUserInfo(const std::string &, const std::string &, const std::string &, const std::string &);
-
-    bool isRegistered() const;
 
     Client &operator<<(const std::string &data);
     Client &operator>>(std::string &data);
