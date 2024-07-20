@@ -37,9 +37,7 @@
 #define ERR_BADCHANMASK_476(target, channel) ERROR_REPLY(476, target, (channel) + " :Bad Channel Mask")
 #define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
 
-#define RPL_BRDCAST_MODE(client, channel, mode, params)                      \
-    (":" + CLIENT_SOURCE((client)) + " MODE " + (channel).get_name() + " " + \
-     (mode) + " " + (params) + "\r\n")
+#define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + CLIENT_SOURCE((client)) + " MODE " + (channel).getChannelName() + " " + (mode) + " " + (params) + "\r\n")
 
 //NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
