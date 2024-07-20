@@ -6,6 +6,8 @@
 #include <set>
 #include <map>
 
+#define CHANNEL_LENGTH 200
+
 //TODO - MODE는 i, t, k, l, o 구현 필요
 /*
 //SECTION - mode 파라미터 설명
@@ -65,6 +67,9 @@ public:
     ~Channel();
 
     std::string getName() const;
+
+    void addClient(Client *);
+    void addOperator(Client *);
 
 public:
     Channel(void);

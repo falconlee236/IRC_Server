@@ -38,6 +38,7 @@ private:
     bool isDuplicateNickname(const std::string &);
     bool isValidChannel(const std::string &);
     Channel *getExistingChannel(const std::string &);
+    void createChannel(const std::string &, Client *);
 
     void nick(Client *, const std::vector<std::string>);
     void pass(Client *, const std::vector<std::string>);

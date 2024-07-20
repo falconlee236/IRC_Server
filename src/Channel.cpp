@@ -21,3 +21,13 @@ Channel& Channel::operator=(const Channel &obj){
 std::string Channel::getName() const {
     return _name;
 }
+
+void Channel::addClient(Client *client) {
+    _clients.insert(client);
+    _clients_map[client->getNickname()] = client;
+}
+
+void Channel::addOperator(Client *client) {
+    _operators.insert(client);
+    _operators_map[client->getNickname()] = client;
+}

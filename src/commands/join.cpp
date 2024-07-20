@@ -26,15 +26,16 @@ void Server::join(Client *client, const std::vector<std::string> params) {
             // key 확인
             // _clients에 clinet 넣기
         } else {
-            _channels.insert(new Channel(*it));
-            // TODO: _clients, _operators에 client 넣기
+            createChannel(*it, client);
         }
     }
 }
 
-// TODO: 조건 수정
 bool Server::isValidChannel(const std::string &channel) {
-    return !channel.empty() && (channel[0] == '#' || channel[0] == '&');
+    if (channel.length() < 2 || channel.size() > CHANNEL_LENGTH) {
+        return false;
+    }
+    return (channel[0] == '#' || channel[0] == '&');
 }
 
 Channel *Server::getExistingChannel(const std::string &channel) {
@@ -44,4 +45,15 @@ Channel *Server::getExistingChannel(const std::string &channel) {
         }
     }
     return NULL;
+}
+
+void Server::createChannel(const std::string &channel_name, Client *client) {
+    Channel *new_channel = new Channel(channel_name);
+    _channels.insert(new_channel);
+    new_channel->addClient(client);
+    new_channel->addOperator(client);
+
+    *client << RPL_CHANNELJOIN(*client, channel_name);
+    *client << RPL_NAMREPLY_353(client->getNickname(), channel_name, "@" + client->getNickname());
+    *client << RPL_ENDOFNAMES_366(client->getNickname(), channel_name);
 }
