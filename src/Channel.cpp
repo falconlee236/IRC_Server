@@ -31,3 +31,18 @@ void Channel::addOperator(Client *client) {
     _operators.insert(client);
     _operators_map[client->getNickname()] = client;
 }
+
+bool Channel::isClientInChannel(Client *client) {
+    return _clients.find(client) != _clients.end();
+}
+
+bool Channel::isModeSet(_ChannelFlag flag) {
+    return _flags.test(flag);
+}
+
+Channel &Channel::operator<<(const std::string &message) {
+    for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+        **it << message;
+    }
+    return *this;
+}

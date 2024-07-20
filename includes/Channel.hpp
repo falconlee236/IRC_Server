@@ -28,6 +28,7 @@ private:
     4. 이름은 변경할 수 없음
     */
     const std::string _name;
+
     enum _ChannelFlag{
         INVITE_ONLY, //LINK - i mode flag
         SET_USER_LIMIT, //LINK - l mode flag
@@ -70,6 +71,13 @@ public:
 
     void addClient(Client *);
     void addOperator(Client *);
+
+    bool isClientInChannel(Client *);
+    bool isModeSet(_ChannelFlag);
+
+    void join(Client *, const std::string &);
+
+    Channel &operator<<(const std::string &);
 
 public:
     Channel(void);

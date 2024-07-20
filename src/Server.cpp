@@ -143,7 +143,7 @@ void Server::handleClientEvent(struct kevent &event) {
                     quit(&client, msg.getParams());
                     break;
                 case Message::JOIN:
-                    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
+                    join(&client, msg.getParams());
                     break;
                 case Message::PART:
                 case Message::TOPIC:

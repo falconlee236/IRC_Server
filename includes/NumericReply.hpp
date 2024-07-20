@@ -47,12 +47,16 @@
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 
 // NOTE - JOIN_REPLIES
-#define ERR_BADCHANMASK_476(target, channel) ERROR_REPLY(476, target, channel + " :Bad Channel Mask")
+#define ERR_USERONCHANNEL_443(target, channel_name) ERROR_REPLY(443, target, target + " " + channel_name + " :is already on channel")
+#define ERR_CHANNELISFULL_471(target, channel_name) ERROR_REPLY(471, target, channel_name + " :Cannot join channel (+l)")
+#define ERR_INVITEONLYCHAN_473(target, channel_name) ERROR_REPLY(473, target, channel_name + " :Cannot join channel (+i)")
+#define ERR_BADCHANNELKEY_475(target, channel_name) ERROR_REPLY(475, target, channel_name + " :Cannot join channel (+k)")
+#define ERR_BADCHANMASK_476(target, channel_name) ERROR_REPLY(476, target, channel_name + " :Bad Channel Mask")
 
 #define RPL_CHANNELJOIN(client, channel_name) (":" + USER_PREFIX(client) + " JOIN " + channel_name + CRLF)
 #define RPL_NAMREPLY_353(target, channel_name, name_list) NORMAL_REPLY(353, target, "= " + channel_name + " :" + name_list)
 
-#define RPL_ENDOFNAMES_366(target, channelName) NORMAL_REPLY(366, target, channelName + " :End of /NAMES list")
+#define RPL_ENDOFNAMES_366(target, channel_name) NORMAL_REPLY(366, target, channel_name + " :End of /NAMES list")
 
 
 #endif
