@@ -43,6 +43,7 @@ bool Channel::isModeSet(_ChannelFlag flag) {
 Channel &Channel::operator<<(const std::string &message) {
     for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         **it << message;
+        **it >> (*it)->getSocket();
     }
     return *this;
 }
