@@ -24,12 +24,13 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 						case 'l':
 							setFlag(Channel::ADD, Channel::SET_USER_LIMIT, params, idx);
 							break;
-						case 'i':
+						case 'i': 
 							setFlag(Channel::ADD, Channel::INVITE_ONLY, params, idx);
+							idx--; //NOTE - i는 매개변수 없음
 							break;
 						case 't':
 							setFlag(Channel::ADD, Channel::SET_TOPIC, params, idx);
-							idx--;
+							idx--; //NOTE - t는 매개변수 없음
 							break;
 						case 'k':
 							setFlag(Channel::ADD, Channel::SET_KEY, params, idx);
@@ -52,11 +53,12 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 					case 'l':
 						setFlag(Channel::REMOVE, Channel::SET_USER_LIMIT, params, idx);
 						break;
-					case 'i':
+					case 'i': //NOTE - i는 매개변수 없음
 						setFlag(Channel::REMOVE, Channel::INVITE_ONLY, params, idx);
+                        idx--;
 						break;
-					case 't':
-						setFlag(Channel::REMOVE, Channel::SET_TOPIC, params, idx);
+                    case 't': // NOTE - t는 매개변수 없음
+                        setFlag(Channel::REMOVE, Channel::SET_TOPIC, params, idx);
 						idx--;
 						break;
 					case 'k':
@@ -118,6 +120,7 @@ void Channel::setFlag(enum _FlagOp flag_op, enum _ChannelFlag flag, const std::v
 			break;
 		case Channel::SET_KEY:
 			_flags[Channel::SET_KEY] = (flag_op == Channel::ADD ? 1 : 0);
+			_key = param;
 			break;
 	}
 }
