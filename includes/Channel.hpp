@@ -5,6 +5,7 @@
 #include <bitset>
 #include <set>
 #include <map>
+#include <sstream>
 
 //TODO - MODE는 i, t, k, l, o 구현 필요
 /*
