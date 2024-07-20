@@ -32,6 +32,15 @@ void Channel::addOperator(Client *client) {
     _operators_map[client->getNickname()] = client;
 }
 
+void Channel::removeClient(Client *client) {
+    _clients.erase(client);
+    _clients_map.erase(client->getNickname());
+    _operators.erase(client);
+    _operators_map.erase(client->getNickname());
+    _guests.erase(client);
+    _guests_map.erase(client->getNickname());
+}
+
 bool Channel::isClientInChannel(Client *client) {
     return _clients.find(client) != _clients.end();
 }

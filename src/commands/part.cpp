@@ -12,12 +12,10 @@ void Server::part(Client *client, const std::vector<std::string> params) {
     }
 
     std::vector<std::string> channels = Message::split(params[0], ',');
-
     for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it) {
         Channel *channel = getExistingChannel(*it);
         if (channel) {
             channel->part(client);
-            // TODO: channel에 client가 없으면 제거
         } else {
             *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), *it);
         }
@@ -25,5 +23,17 @@ void Server::part(Client *client, const std::vector<std::string> params) {
 }
 
 void Channel::part(Client *client) {
+    if (!isClientInChannel(client)) {
+        *client << ERR_NOTONCHANNEL_442(client->getNickname(), _name);
+        return;
+    }
 
+    removeClient(client);
+    *this << RPL_CHANNELPART(*client, _name);
+    *client << RPL_CHANNELPART(*client, _name);
+
+    // client가 없으면 channel 삭제
+    if (_clients.empty()) {
+        delete this;
+    }
 }
