@@ -1,6 +1,8 @@
 #include "../includes/Channel.hpp"
 
-Channel::Channel(std::string name) : _name(name){}
+Channel::Channel(std::string name) : _name(name){
+	_max_clients = 0;	
+}
 
 Channel::~Channel(){}
 
@@ -35,6 +37,8 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 						case 'o':
 							setOperator(Channel::ADD, params, idx);
 							break;
+						case '-':
+							break;
 						default:
 							return false;
 					}
@@ -61,6 +65,8 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 					case 'o':
 						setOperator(Channel::REMOVE, params, idx);
 						break;
+					case '+':
+						break;
 					default:
 						return false;
 					}
@@ -76,7 +82,7 @@ bool Channel::setChannelFlag(const std::vector<std::string> &params){
 }
 
 void Channel::setOperator(enum _FlagOp flag_op, const std::vector<std::string> &params , int param_idx){
-	if (param_idx >= params.size() || _clients_map.find(params[param_idx]) == _clients_map.end())
+	if (param_idx >= static_cast<int>(params.size()) || _clients_map.find(params[param_idx]) == _clients_map.end())
 		throw std::runtime_error("Invalid parameters");
 	
 	std::string op_client_name = params[param_idx];
@@ -87,6 +93,32 @@ void Channel::setOperator(enum _FlagOp flag_op, const std::vector<std::string> &
 	} else {
 		_operators.erase(op_client);
 		_operators_map.erase(op_client_name);
+	}
+}
+
+void Channel::setFlag(enum _FlagOp flag_op, enum _ChannelFlag flag, const std::vector<std::string> &params,int param_idx){
+	if (param_idx >= static_cast<int>(params.size()))
+		throw std::runtime_error("Invalid parameters");
+	std::string param = params[param_idx];
+	std::istringstream iss(param);
+	switch (flag){
+		case Channel::SET_USER_LIMIT:
+			int cnt;
+			iss  >> std::noskipws >> cnt;
+			if (iss.eof() && !iss.fail())
+				throw std::runtime_error("invalid number");
+			_flags[Channel::SET_USER_LIMIT] = (flag_op == Channel::ADD ? 1 : 0);
+			_max_clients = cnt;
+			break;
+		case Channel::INVITE_ONLY:
+			_flags[Channel::INVITE_ONLY] = (flag_op == Channel::ADD ? 1 : 0);
+			break;
+		case Channel::SET_TOPIC:
+			_flags[Channel::SET_TOPIC] = (flag_op == Channel::ADD ? 1 : 0);
+			break;
+		case Channel::SET_KEY:
+			_flags[Channel::SET_KEY] = (flag_op == Channel::ADD ? 1 : 0);
+			break;
 	}
 }
 
