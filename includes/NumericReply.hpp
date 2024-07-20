@@ -34,4 +34,8 @@
 
 //NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
+
+// NOTE - JOIN_REPLIES
+#define ERR_BADCHANMASK_476(target, channel) ERROR_REPLY(476, target, channel + " :Bad Channel Mask")
+
 #endif
