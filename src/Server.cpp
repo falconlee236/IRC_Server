@@ -192,6 +192,15 @@ void Server::registerClient(Client *client) {
     }
 }
 
+Channel *Server::getExistingChannel(const std::string &channel) {
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == channel) {
+            return *it;
+        }
+    }
+    return NULL;
+}
+
 Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
     throw std::runtime_error("Server(): consturctor is not allowed");
 }

@@ -55,8 +55,8 @@
 
 #define RPL_CHANNELJOIN(client, channel_name) (":" + USER_PREFIX(client) + " JOIN " + channel_name + CRLF)
 #define RPL_NAMREPLY_353(target, channel_name, name_list) NORMAL_REPLY(353, target, "= " + channel_name + " :" + name_list)
-
 #define RPL_ENDOFNAMES_366(target, channel_name) NORMAL_REPLY(366, target, channel_name + " :End of /NAMES list")
 
+#define ERR_NOSUCHCHANNEL_403(target, channel_name) ERROR_REPLY(403, target, channel_name + " :No such channel")
 
 #endif

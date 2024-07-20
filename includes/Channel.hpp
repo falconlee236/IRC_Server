@@ -76,6 +76,7 @@ public:
     bool isModeSet(_ChannelFlag);
 
     void join(Client *, const std::string &);
+    void part(Client *);
 
     Channel &operator<<(const std::string &);
 

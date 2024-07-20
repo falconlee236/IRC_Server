@@ -33,11 +33,11 @@ private:
     void handleClientEvent(struct kevent &);
     void removeClient(int);
     void registerClient(Client *);
+    Channel *getExistingChannel(const std::string &);
 
     bool isValidNickname(const std::string &);
     bool isDuplicateNickname(const std::string &);
     bool isValidChannel(const std::string &);
-    Channel *getExistingChannel(const std::string &);
     void createChannel(const std::string &, Client *);
 
     void nick(Client *, const std::vector<std::string>);
@@ -45,6 +45,7 @@ private:
     void quit(Client *, const std::vector<std::string>);
     void user(Client *, const std::vector<std::string>);
     void join(Client *, const std::vector<std::string>);
+    void part(Client *, const std::vector<std::string>);
 
 public:
     Server(void);
