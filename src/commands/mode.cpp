@@ -17,7 +17,7 @@ k (key)
 o (nickname)
 이 필요
 */
-
+//TODO - Test 필요
 void Server::mode(Client *client, const std::vector<std::string> params){
     if (!client->isRegistered){
         *client << ERR_NOTREGISTERED_451(client->getNickname());
@@ -38,11 +38,11 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << "We need a 402 not channel operator\r\n";
         return;
     }
-
     if (!channel->setChannelFlag(params)){
         *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getChannelName());
         return;
     }
+    *client << RPL_BRDCAST_MODE(*client, *channel, params[2], (params.size() > 2 ? params.back() : ""));
 }
 
 Channel *Server::getValidChannel(const std::string &name){
