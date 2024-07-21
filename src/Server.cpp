@@ -36,6 +36,9 @@ Server::~Server() {
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         delete it->second;
     }
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        delete *it;
+    }
 }
 
 void Server::initServerInfo() {
@@ -143,9 +146,11 @@ void Server::handleClientEvent(struct kevent &event) {
                     quit(&client, msg.getParams());
                     break;
                 case Message::JOIN:
-                    client << std::string(":irc.local 451 * JOIN :You have not registered.\r\n");
+                    join(&client, msg.getParams());
                     break;
                 case Message::PART:
+                    part(&client, msg.getParams());
+                    break;
                 case Message::TOPIC:
                 case Message::MODE:
                     mode(&client, msg.getParams());
@@ -194,8 +199,16 @@ void Server::registerClient(Client *client) {
     }
 }
 
+Channel *Server::getExistingChannel(const std::string &channel) {
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == channel) {
+            return *it;
+        }
+    }
+    return NULL;
+}
 
-Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0){
+Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
     throw std::runtime_error("Server(): consturctor is not allowed");
 }
 

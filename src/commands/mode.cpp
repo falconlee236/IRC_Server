@@ -39,7 +39,7 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         return;
     }
     if (!channel->setChannelFlag(params)){
-        *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getChannelName());
+        *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getName());
         return;
     }
     *client << RPL_BRDCAST_MODE(*client, *channel, params[2], (params.size() > 2 ? params.back() : ""));
