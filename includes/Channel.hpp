@@ -9,7 +9,6 @@
 
 #define CHANNEL_LENGTH 200
 
-//TODO - MODE는 i, t, k, l, o 구현 필요
 /*
 //SECTION - mode 파라미터 설명
 i: channel을 invite only로 만든다 (INVITE command 참고)

@@ -1,6 +1,6 @@
 #include "../../includes/Server.hpp"
 
-/*STUB - mode test
+/*NOTE - mode test
 user Input ->  Irssi Input ->  inspircd Output
 /mode #hello +t -o test +l 30 +k 11 -> MODE #hello +t-o+lk test 30 11 -> sang!root@127.0.0.1 MODE #hello +lk 30 :11
 /mode +t -t -> MODE #hello +t-t -> sang!root@127.0.0.1 MODE #hello :-t (맨 마지막만 설정)
@@ -17,7 +17,6 @@ k (key)
 o (nickname)
 이 필요
 */
-//TODO - Test 필요
 void Server::mode(Client *client, const std::vector<std::string> params){
     if (!client->isRegistered){
         *client << ERR_NOTREGISTERED_451(client->getNickname());
