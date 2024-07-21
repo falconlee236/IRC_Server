@@ -45,6 +45,7 @@
 
 //NOTE - MODE_REPLIES
 #define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
+#define ERR_CHANOPRIVSNEEDED_482(target, channel_name) ERROR_REPLY(482, target, channel_name + " :You're not channel operator")
 
 #define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + USER_PREFIX((client)) + " MODE " + (channel).getName() + " " + (mode) + " " + (params) + "\r\n")
 
