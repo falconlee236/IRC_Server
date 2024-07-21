@@ -71,6 +71,7 @@ public:
 
     void addClient(Client *);
     void addOperator(Client *);
+    void addGuest(Client *);
     void removeClient(Client *);
 
     bool isClientInChannel(Client *);
