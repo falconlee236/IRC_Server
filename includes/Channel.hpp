@@ -71,11 +71,13 @@ public:
 
     void addClient(Client *);
     void addOperator(Client *);
+    void removeClient(Client *);
 
     bool isClientInChannel(Client *);
     bool isModeSet(_ChannelFlag);
 
     void join(Client *, const std::string &);
+    void part(Client *);
 
     Channel &operator<<(const std::string &);
 

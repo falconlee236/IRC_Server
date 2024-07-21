@@ -36,6 +36,9 @@ Server::~Server() {
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         delete it->second;
     }
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        delete *it;
+    }
 }
 
 void Server::initServerInfo() {
@@ -146,6 +149,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     join(&client, msg.getParams());
                     break;
                 case Message::PART:
+                    part(&client, msg.getParams());
+                    break;
                 case Message::TOPIC:
                 case Message::MODE:
                 case Message::INVITE:
@@ -190,6 +195,15 @@ void Server::registerClient(Client *client) {
         *client << RPL_YOURHOST_002(*client);
         *client << RPL_CREATED_003(*client, _created_time);
     }
+}
+
+Channel *Server::getExistingChannel(const std::string &channel) {
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == channel) {
+            return *it;
+        }
+    }
+    return NULL;
 }
 
 Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {

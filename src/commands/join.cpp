@@ -88,12 +88,3 @@ bool Server::isValidChannel(const std::string &channel) {
     }
     return (channel[0] == '#' || channel[0] == '&');
 }
-
-Channel *Server::getExistingChannel(const std::string &channel) {
-    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
-        if ((*it)->getName() == channel) {
-            return *it;
-        }
-    }
-    return NULL;
-}
