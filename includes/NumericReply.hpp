@@ -47,9 +47,9 @@
 #define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
 #define ERR_CHANOPRIVSNEEDED_482(target, channel_name) ERROR_REPLY(482, target, channel_name + " :You're not channel operator")
 
-#define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + USER_PREFIX((client)) + " MODE " + (channel).getName() + " " + (mode) + " " + (params) + "\r\n")
+#define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + USER_PREFIX(client) + " MODE " + (channel).getName() + " " + mode + " " + params + CRLF)
 
-    // NOTE - ERR_REPLIES
+// NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 
     // NOTE - JOIN_REPLIES
@@ -66,6 +66,6 @@
 #define ERR_NOSUCHCHANNEL_403(target, channel_name) ERROR_REPLY(403, target, channel_name + " :No such channel")
 #define ERR_NOTONCHANNEL_442(target, channel_name) ERROR_REPLY(442, target, channel_name + " :You're not on that channel")
 
-#define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX((client)) + " PART " + channel_name + CRLF)
+#define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
 
 #endif

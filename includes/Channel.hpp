@@ -46,7 +46,6 @@ private:
         REMOVE
     };
 
-    //TODO - _max_client 사용하기
     //SECTION - l mode flag variables
     std::size_t _max_clients;
     //!SECTION
@@ -86,9 +85,10 @@ public:
 
     Channel &operator<<(const std::string &);
 
-    //NOTE - 내가 추가한거
-    bool checkChannelOperator(Client *);
+    bool isClientInOperator(Client *);
     bool setChannelFlag(const std::vector<std::string> &);
+    size_t getClientNumber(void);
+    void printChannelInfo(void);
 
 private:
     void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string> &, int);
