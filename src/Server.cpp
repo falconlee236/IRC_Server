@@ -206,6 +206,15 @@ Channel *Server::getExistingChannel(const std::string &channel) {
     return NULL;
 }
 
+Client *Server::getClientbyNickname(const std::string &nickname){
+    for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it){
+        if (it->second->getNickname() == nickname){
+            return it->second;
+        }
+    }
+    return NULL;
+}
+
 Server::Server(void) : _port(0), _password(""), _server_fd(-1), _kqueue_fd(0) {
     throw std::runtime_error("Server(): consturctor is not allowed");
 }
