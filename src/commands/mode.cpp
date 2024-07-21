@@ -27,22 +27,20 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << ERR_NEEDMOREPARAMS_461(client->getNickname());
         return;
     }
-    //TODO - cannot found channel error 필요할듯
     Channel *channel = getValidChannel(params[0]);
     if (channel == false){
-        *client << ERR_UMODEUNKNOWNFLAG_501(client->getNickname());
+        *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), params[0]);
         return;
     }
-    //TODO - 482 에러 필요 (not channel operator)
     if (!channel->checkChannelOperator(client)){
-        *client << "We need a 402 not channel operator\r\n";
+        *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), channel->getName());
         return;
     }
     if (!channel->setChannelFlag(params)){
         *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getName());
         return;
     }
-    *client << RPL_BRDCAST_MODE(*client, *channel, params[2], (params.size() > 2 ? params.back() : ""));
+    *channel << RPL_BRDCAST_MODE(*client, *channel, params[2], (params.size() > 2 ? params.back() : ""));
 }
 
 Channel *Server::getValidChannel(const std::string &name){
