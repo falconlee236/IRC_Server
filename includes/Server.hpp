@@ -35,8 +35,6 @@ private:
     void registerClient(Client *);
     Channel *getExistingChannel(const std::string &);
 
-    Channel* getValidChannel(const std::string &);
-
     bool isValidNickname(const std::string &);
     bool isDuplicateNickname(const std::string &);
     bool isValidChannel(const std::string &);
