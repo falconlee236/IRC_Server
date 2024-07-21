@@ -45,6 +45,8 @@ public:
     e_cmd getCmdType();
     const std::string getCmd();
     const std::vector<std::string> getParams();
+
+    static std::vector<std::string> split(const std::string &str, char delimiter);
 };
 
 #endif
