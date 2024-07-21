@@ -39,11 +39,11 @@ void Channel::join(Client *client, const std::string &key) {
         *client << ERR_USERONCHANNEL_443(client->getNickname(), _name);
         return;
     }
-    // TODO: +l 모드에서 설정한 max 값 확인 (Channel에 max 값 저장하는 변수 추가해야 함)
-    // if (isModeSet(SET_USER_LIMIT) && _clients.size() >= _max_clients) {
-    //     *client << ERR_CHANNELISFULL_471(client->getNickname(), _name);
-    //     return;
-    // } 
+    // TODO: +l 모드에서 설정한 max 값 확인
+    if (isModeSet(SET_USER_LIMIT) && _clients.size() >= _max_clients) {
+        *client << ERR_CHANNELISFULL_471(client->getNickname(), _name);
+        return;
+    } 
     if (isModeSet(INVITE_ONLY) && _guests.find(client) == _guests.end()) {
         *client << ERR_INVITEONLYCHAN_473(client->getNickname(), _name);
         return;
@@ -67,6 +67,9 @@ void Channel::join(Client *client, const std::string &key) {
     }
     // channel의 모든 client에 reply 전송
     *this << RPL_CHANNELJOIN(*client, _name);
+    if (!_topic.empty()) {
+        *client << RPL_TOPIC_332(client->getNickname(), _name, _topic);
+    }
     *client << RPL_NAMREPLY_353(client->getNickname(), _name, user_list);
     *client << RPL_ENDOFNAMES_366(client->getNickname(), _name);
 }

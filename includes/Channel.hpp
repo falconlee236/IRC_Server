@@ -43,7 +43,7 @@ private:
 
     //TODO - _max_client 사용하기
     //SECTION - l mode flag variables
-    // std::size_t _max_clients;
+    std::size_t _max_clients;
     //!SECTION
 
     //SECTION - i mode flag variables
