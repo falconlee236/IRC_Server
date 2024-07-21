@@ -162,6 +162,7 @@ void Server::handleClientEvent(struct kevent &event) {
                     break;
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
+                    break;
             }
         }catch (Client::CannotFoundCRLFException &e){
             break;
