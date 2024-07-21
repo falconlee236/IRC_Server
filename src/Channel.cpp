@@ -32,6 +32,11 @@ void Channel::addOperator(Client *client) {
     _operators_map[client->getNickname()] = client;
 }
 
+void Channel::addGuest(Client *client) {
+    _guests.insert(client);
+    _guests_map[client->getNickname()] = client;
+}
+
 void Channel::removeClient(Client *client) {
     _clients.erase(client);
     _clients_map.erase(client->getNickname());
