@@ -27,12 +27,13 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << ERR_NEEDMOREPARAMS_461(client->getNickname());
         return;
     }
-    Channel *channel = getValidChannel(params[0]);
+    Channel *channel = getExistingChannel(params[0]);
+    if (channel != NULL) channel->printChannelInfo();
     if (channel == false){
         *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), params[0]);
         return;
     }
-    if (!channel->checkChannelOperator(client)){
+    if (!channel->isClientInOperator(client)){
         *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), channel->getName());
         return;
     }
@@ -40,15 +41,9 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << ERR_BADCHANMASK_476(client->getNickname(), channel->getName());
         return;
     }
-    *channel << RPL_BRDCAST_MODE(*client, *channel, params[2], (params.size() > 2 ? params.back() : ""));
-}
-
-Channel *Server::getValidChannel(const std::string &name){
-    // TODO - Channel list가 필요함
-    // STUB - 임시 채널 생성
-    (void)name;
-    Channel *tmp_channel = new Channel(name);
-    return tmp_channel;
-    // STUB - channel이 없는 경우
-    return NULL;
+    std::string params_output;
+    for (size_t i = 2; i < params.size(); i++){
+        params_output += params[i] + " ";
+    }
+    *channel << RPL_BRDCAST_MODE(*client, *channel, params[1], params_output);
 }
