@@ -44,7 +44,6 @@
 #define RPL_NICKNAMECHANGE(target, oldNick) (":" + oldNick + " NICK " + target + CRLF)
 
 //NOTE - MODE_REPLIES
-#define ERR_BADCHANMASK_476(target, channel) ERROR_REPLY(476, target, (channel) + " :Bad Channel Mask")
 #define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
 
 #define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + USER_PREFIX((client)) + " MODE " + (channel).getName() + " " + (mode) + " " + (params) + "\r\n")
