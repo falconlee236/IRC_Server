@@ -41,8 +41,18 @@ void Channel::removeClient(Client *client) {
     _guests_map.erase(client->getNickname());
 }
 
+void Channel::setTopic(Client *client, const std::string &topic) {
+    _topic = topic;
+    _topic_setter = client;
+    _topic_set_time = std::time(NULL);
+}
+
 bool Channel::isClientInChannel(Client *client) {
     return _clients.find(client) != _clients.end();
+}
+
+bool Channel::isOperator(Client *client) {
+    return _operators.find(client) != _operators.end();
 }
 
 bool Channel::isModeSet(_ChannelFlag flag) {

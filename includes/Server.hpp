@@ -46,6 +46,7 @@ private:
     void user(Client *, const std::vector<std::string>);
     void join(Client *, const std::vector<std::string>);
     void part(Client *, const std::vector<std::string>);
+    void topic(Client *, const std::vector<std::string>);
 
 public:
     Server(void);

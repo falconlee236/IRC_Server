@@ -55,8 +55,8 @@ private:
     //SECTION - t mode flag variables
     //NOTE - Topic set by sang [root@127.0.0.1] [Thu Jul 18 16:25:46 2024]
     std::string _topic;
-    // Client *_topic_setter;
-    // std::time_t _topic_set_time;
+    Client *_topic_setter;
+    std::time_t _topic_set_time;
     //!SECTION
 
     //SECTION - k mode flag variables
@@ -72,12 +72,15 @@ public:
     void addClient(Client *);
     void addOperator(Client *);
     void removeClient(Client *);
+    void setTopic(Client *, const std::string &);
 
     bool isClientInChannel(Client *);
+    bool isOperator(Client *);
     bool isModeSet(_ChannelFlag);
 
     void join(Client *, const std::string &);
     void part(Client *);
+    void topic(Client *, const std::string &);
 
     Channel &operator<<(const std::string &);
 

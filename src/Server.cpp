@@ -152,6 +152,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     part(&client, msg.getParams());
                     break;
                 case Message::TOPIC:
+                    topic(&client, msg.getParams());
+                    break;
                 case Message::MODE:
                 case Message::INVITE:
                 case Message::KICK:
