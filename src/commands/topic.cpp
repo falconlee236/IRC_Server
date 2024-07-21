@@ -36,7 +36,7 @@ void Channel::topic(Client *client, const std::string &topic) {
             *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), _name);
         } else {
             setTopic(client, topic);
-            *this << RPL_CHANNELTOPIC(*client, _name, _topic);
+            *this << RPL_CHANNELTOPIC(*client, _name, topic);
         }
     }
 }
