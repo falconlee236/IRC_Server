@@ -28,9 +28,9 @@ void Channel::part(Client *client) {
         return;
     }
 
-    removeClient(client);
     *this << RPL_CHANNELPART(*client, _name);
     *client << RPL_CHANNELPART(*client, _name);
+    Channel::removeClient(client);
 
     // client가 없으면 channel 삭제
     if (_clients.empty()) {

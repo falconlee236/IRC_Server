@@ -1,13 +1,12 @@
 #include "../../includes/Server.hpp"
 
 void Server::pass(Client *client, const std::vector<std::string> params) {
-    if (params.empty()){
+    if (params.empty())
         *client << ERR_NEEDMOREPARAMS_461(client->getNickname());
-        return;
-    }
-    if (Server::_password != params.back()){
+    else if (Server::_password != params.back()){
         *client << ERR_PASSWDMISMATCH_464(client->getNickname());
-        return;
+        throw std::runtime_error("password incorrect");
     }
-    client->isPassConfirmed = true;
+    else 
+        client->isPassConfirmed = true;
 }

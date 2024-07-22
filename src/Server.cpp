@@ -153,6 +153,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     break;
                 case Message::TOPIC:
                 case Message::MODE:
+                    mode(&client, msg.getParams());
+                    break;
                 case Message::INVITE:
                 case Message::KICK:
                 case Message::PRIVMSG:
@@ -160,6 +162,7 @@ void Server::handleClientEvent(struct kevent &event) {
                     break;
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
+                    break;
             }
         }catch (Client::CannotFoundCRLFException &e){
             break;
