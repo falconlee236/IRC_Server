@@ -88,7 +88,6 @@ public:
 
     Channel &operator<<(const std::string &);
 
-    bool isClientInOperator(Client *);
     bool setChannelFlag(const std::vector<std::string> &);
     size_t getClientNumber(void);
     void printChannelInfo(void);
