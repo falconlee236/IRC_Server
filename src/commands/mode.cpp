@@ -32,7 +32,7 @@ void Server::mode(Client *client, const std::vector<std::string> params){
         *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), params[0]);
         return;
     }
-    if (!channel->isClientInOperator(client)){
+    if (!channel->isOperator(client)){
         *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), channel->getName());
         return;
     }

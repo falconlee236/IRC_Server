@@ -71,6 +71,13 @@
 
 #define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
 
+// NOTE - TOPIC
+#define RPL_NOTOPIC_331(target, channel_name) NORMAL_REPLY(331, target, channel_name + " :No topic is set")
+#define RPL_TOPIC_332(target, channel_name, topic) NORMAL_REPLY(332, target, channel_name + " :" + topic)
+#define ERR_CHANOPRIVSNEEDED_482(target, channel_name) ERROR_REPLY(482, target, channel_name + " :You're not channel operator")
+
+#define RPL_CHANNELTOPIC(client, channel_name, topic) (":" + USER_PREFIX(client) + " TOPIC " + channel_name + " " + topic + CRLF)
+
 // NOTE - INVITE_REPLIES
 #define ERR_ERR_NOSUCHNICK_401(target) ERROR_REPLY(401, target, " :No such nick/channel")
 

@@ -70,6 +70,9 @@ void Channel::join(Client *client, const std::string &key) {
     }
     //NOTE - channel의 모든 client에 reply 전송
     *this << RPL_CHANNELJOIN(*client, _name);
+    if (!_topic.empty()) {
+        *client << RPL_TOPIC_332(client->getNickname(), _name, _topic);
+    }
     *client << RPL_NAMREPLY_353(client->getNickname(), _name, user_list);
     *client << RPL_ENDOFNAMES_366(client->getNickname(), _name);
 }

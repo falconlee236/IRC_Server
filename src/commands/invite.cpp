@@ -30,7 +30,7 @@ void Server::invite(Client *client, const std::vector<std::string> params){
         return;
     }
     //NOTE - MODE +i 채널에 사용자를 초대하기 위해서는 초대를 보내는 client가 해달 채널의 운영자여야한다.
-    if (targetChannel->isModeSet(Channel::INVITE_ONLY) && !targetChannel->isClientInOperator(client)){
+    if (targetChannel->isModeSet(Channel::INVITE_ONLY) && !targetChannel->isOperator(client)){
         *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), targetChannel->getName());
         return;
     }

@@ -49,6 +49,7 @@ private:
     void mode(Client *, const std::vector<std::string>);
     void join(Client *, const std::vector<std::string>);
     void part(Client *, const std::vector<std::string>);
+    void topic(Client *, const std::vector<std::string>);
     void invite(Client *, const std::vector<std::string>);
     void ping(Client *, const std::vector<std::string>);
 
