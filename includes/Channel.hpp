@@ -5,10 +5,10 @@
 #include <bitset>
 #include <set>
 #include <map>
+#include <sstream>
 
 #define CHANNEL_LENGTH 200
 
-//TODO - MODE는 i, t, k, l, o 구현 필요
 /*
 //SECTION - mode 파라미터 설명
 i: channel을 invite only로 만든다 (INVITE command 참고)
@@ -40,10 +40,13 @@ private:
     std::map<std::string, Client *> _clients_map;
     std::set<Client *> _operators;
     std::map<std::string, Client *> _operators_map;
+    enum _FlagOp{
+        ADD,
+        REMOVE
+    };
 
-    //TODO - _max_client 사용하기
     //SECTION - l mode flag variables
-    // std::size_t _max_clients;
+    std::size_t _max_clients;
     //!SECTION
 
     //SECTION - i mode flag variables
@@ -67,7 +70,7 @@ public:
     Channel(std::string);
     ~Channel();
 
-    std::string getName() const;
+    const std::string& getName() const;
 
     void addClient(Client *);
     void addOperator(Client *);
@@ -81,6 +84,15 @@ public:
     void part(Client *);
 
     Channel &operator<<(const std::string &);
+
+    bool isClientInOperator(Client *);
+    bool setChannelFlag(const std::vector<std::string> &);
+    size_t getClientNumber(void);
+    void printChannelInfo(void);
+
+private:
+    void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string> &, int);
+    void setOperator(enum _FlagOp, const std::vector<std::string> &, int);
 
 public:
     Channel(void);
