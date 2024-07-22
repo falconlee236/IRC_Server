@@ -34,6 +34,8 @@ private:
     void removeClient(int);
     void registerClient(Client *);
     Channel *getExistingChannel(const std::string &);
+    Channel *getChannelbyClient(Client *);
+    Client *getClientbyNickname(const std::string &);
 
     bool isValidNickname(const std::string &);
     bool isDuplicateNickname(const std::string &);
@@ -44,9 +46,12 @@ private:
     void pass(Client *, const std::vector<std::string>);
     void quit(Client *, const std::vector<std::string>);
     void user(Client *, const std::vector<std::string>);
+    void mode(Client *, const std::vector<std::string>);
     void join(Client *, const std::vector<std::string>);
     void part(Client *, const std::vector<std::string>);
     void topic(Client *, const std::vector<std::string>);
+    void invite(Client *, const std::vector<std::string>);
+    void ping(Client *, const std::vector<std::string>);
 
 public:
     Server(void);

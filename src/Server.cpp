@@ -155,13 +155,19 @@ void Server::handleClientEvent(struct kevent &event) {
                     topic(&client, msg.getParams());
                     break;
                 case Message::MODE:
+                    mode(&client, msg.getParams());
+                    break;
                 case Message::INVITE:
+                    invite(&client, msg.getParams());
+                    break;
                 case Message::KICK:
                 case Message::PRIVMSG:
                 case Message::PING:
+                    ping(&client, msg.getParams());
                     break;
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
+                    break;
             }
         }catch (Client::CannotFoundCRLFException &e){
             break;
@@ -204,6 +210,23 @@ Channel *Server::getExistingChannel(const std::string &channel) {
         if ((*it)->getName() == channel) {
             return *it;
         }
+    }
+    return NULL;
+}
+
+Client *Server::getClientbyNickname(const std::string &nickname){
+    for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it){
+        if (it->second->getNickname() == nickname){
+            return it->second;
+        }
+    }
+    return NULL;
+}
+
+Channel *Server::getChannelbyClient(Client *target_client){
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it){
+        if ((*it)->isClientInChannel(target_client))
+            return *it;
     }
     return NULL;
 }

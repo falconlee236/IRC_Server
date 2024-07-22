@@ -22,6 +22,9 @@
 #define NORMAL_REPLY(number, target, message) \
     ((std::stringstream() << std::setw(3) << std::setfill('0') << number).str() + " " + target + " " + message + CRLF)
 
+// NOTE - PING_REPLIES
+#define RPL_PONG(params) ("PONG :" + params + CRLF)
+
 // NOTE - REGISTER
 #define RPL_WELCOME_001(client) \
     NORMAL_REPLY(001, (client).getNickname(), ":Welcome to the Internet Relay Network " + USER_PREFIX(client))
@@ -43,10 +46,16 @@
 
 #define RPL_NICKNAMECHANGE(target, oldNick) (":" + oldNick + " NICK " + target + CRLF)
 
-//NOTE - ERR_REPLIES
+//NOTE - MODE_REPLIES
+#define ERR_UMODEUNKNOWNFLAG_501(target) ERROR_REPLY(501, target, ":Unknown mode flag")
+#define ERR_CHANOPRIVSNEEDED_482(target, channel_name) ERROR_REPLY(482, target, channel_name + " :You're not channel operator")
+
+#define RPL_BRDCAST_MODE(client, channel, mode, params) (":" + USER_PREFIX(client) + " MODE " + (channel).getName() + " " + mode + " " + params + CRLF)
+
+// NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 
-// NOTE - JOIN_REPLIES
+    // NOTE - JOIN_REPLIES
 #define ERR_USERONCHANNEL_443(target, channel_name) ERROR_REPLY(443, target, target + " " + channel_name + " :is already on channel")
 #define ERR_CHANNELISFULL_471(target, channel_name) ERROR_REPLY(471, target, channel_name + " :Cannot join channel (+l)")
 #define ERR_INVITEONLYCHAN_473(target, channel_name) ERROR_REPLY(473, target, channel_name + " :Cannot join channel (+i)")
@@ -69,4 +78,8 @@
 
 #define RPL_CHANNELTOPIC(client, channel_name, topic) (":" + USER_PREFIX(client) + " TOPIC " + channel_name + " " + topic + CRLF)
 
+// NOTE - INVITE_REPLIES
+#define ERR_ERR_NOSUCHNICK_401(target) ERROR_REPLY(401, target, " :No such nick/channel")
+
+#define RPL_INVITING_341(client_name, target_name, channel_name) (":" + client_name + " INVITE " + target_name + " " + channel_name + CRLF)
 #endif

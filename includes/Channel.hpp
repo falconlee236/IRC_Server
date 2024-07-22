@@ -5,10 +5,10 @@
 #include <bitset>
 #include <set>
 #include <map>
+#include <sstream>
 
 #define CHANNEL_LENGTH 200
 
-//TODO - MODE는 i, t, k, l, o 구현 필요
 /*
 //SECTION - mode 파라미터 설명
 i: channel을 invite only로 만든다 (INVITE command 참고)
@@ -19,6 +19,13 @@ o: channel operator(관리자)권한을 주거나(give) 뺏는다(take).
 //!SECTION
 */
 class Channel{
+public:
+    enum _ChannelFlag{
+        INVITE_ONLY,    // LINK - i mode flag
+        SET_USER_LIMIT, // LINK - l mode flag
+        SET_TOPIC,      // LINK - t mode flag
+        SET_KEY         // LINK - k mode flag
+    };
 private:
     /*
     //NOTE - Channel Name 규칙
@@ -28,20 +35,16 @@ private:
     4. 이름은 변경할 수 없음
     */
     const std::string _name;
-
-    enum _ChannelFlag{
-        INVITE_ONLY, //LINK - i mode flag
-        SET_USER_LIMIT, //LINK - l mode flag
-        SET_TOPIC, //LINK - t mode flag
-        SET_KEY //LINK - k mode flag
-    };
     std::bitset<4> _flags;
     std::set<Client *> _clients;
     std::map<std::string, Client *> _clients_map;
     std::set<Client *> _operators;
     std::map<std::string, Client *> _operators_map;
+    enum _FlagOp{
+        ADD,
+        REMOVE
+    };
 
-    //TODO - _max_client 사용하기
     //SECTION - l mode flag variables
     std::size_t _max_clients;
     //!SECTION
@@ -67,10 +70,11 @@ public:
     Channel(std::string);
     ~Channel();
 
-    std::string getName() const;
+    const std::string& getName() const;
 
     void addClient(Client *);
     void addOperator(Client *);
+    void addGuest(Client *);
     void removeClient(Client *);
     void setTopic(Client *, const std::string &);
 
@@ -83,6 +87,15 @@ public:
     void topic(Client *, const std::string &);
 
     Channel &operator<<(const std::string &);
+
+    bool isClientInOperator(Client *);
+    bool setChannelFlag(const std::vector<std::string> &);
+    size_t getClientNumber(void);
+    void printChannelInfo(void);
+
+private:
+    void setFlag(enum _FlagOp, enum _ChannelFlag, const std::vector<std::string> &, int);
+    void setOperator(enum _FlagOp, const std::vector<std::string> &, int);
 
 public:
     Channel(void);

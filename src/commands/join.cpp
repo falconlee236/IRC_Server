@@ -39,7 +39,6 @@ void Channel::join(Client *client, const std::string &key) {
         *client << ERR_USERONCHANNEL_443(client->getNickname(), _name);
         return;
     }
-    // TODO: +l 모드에서 설정한 max 값 확인
     if (isModeSet(SET_USER_LIMIT) && _clients.size() >= _max_clients) {
         *client << ERR_CHANNELISFULL_471(client->getNickname(), _name);
         return;
@@ -60,12 +59,16 @@ void Channel::join(Client *client, const std::string &key) {
     std::string user_list;
     for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         if (_operators.find(*it) != _operators.end()) {
-            user_list += "@" + (*it)->getNickname();
-        } else {
+            user_list += "@" + (*it)->getNickname() + " ";
+        } 
+    }
+    //NOTE - 위에서 한번에 처리하면 user_list 버그 생겨서 수정함.
+    for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it){
+        if (_operators.find(*it) == _operators.end()){
             user_list += " " + (*it)->getNickname();
         }
     }
-    // channel의 모든 client에 reply 전송
+    //NOTE - channel의 모든 client에 reply 전송
     *this << RPL_CHANNELJOIN(*client, _name);
     if (!_topic.empty()) {
         *client << RPL_TOPIC_332(client->getNickname(), _name, _topic);
