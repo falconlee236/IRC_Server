@@ -19,6 +19,13 @@ o: channel operator(관리자)권한을 주거나(give) 뺏는다(take).
 //!SECTION
 */
 class Channel{
+public:
+    enum _ChannelFlag{
+        INVITE_ONLY,    // LINK - i mode flag
+        SET_USER_LIMIT, // LINK - l mode flag
+        SET_TOPIC,      // LINK - t mode flag
+        SET_KEY         // LINK - k mode flag
+    };
 private:
     /*
     //NOTE - Channel Name 규칙
@@ -28,13 +35,6 @@ private:
     4. 이름은 변경할 수 없음
     */
     const std::string _name;
-
-    enum _ChannelFlag{
-        INVITE_ONLY, //LINK - i mode flag
-        SET_USER_LIMIT, //LINK - l mode flag
-        SET_TOPIC, //LINK - t mode flag
-        SET_KEY //LINK - k mode flag
-    };
     std::bitset<4> _flags;
     std::set<Client *> _clients;
     std::map<std::string, Client *> _clients_map;
@@ -74,6 +74,7 @@ public:
 
     void addClient(Client *);
     void addOperator(Client *);
+    void addGuest(Client *);
     void removeClient(Client *);
 
     bool isClientInChannel(Client *);

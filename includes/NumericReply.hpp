@@ -71,4 +71,8 @@
 
 #define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
 
+// NOTE - INVITE_REPLIES
+#define ERR_ERR_NOSUCHNICK_401(target) ERROR_REPLY(401, target, " :No such nick/channel")
+
+#define RPL_INVITING_341(client_name, target_name, channel_name) (":" + client_name + " INVITE " + target_name + " " + channel_name + CRLF)
 #endif
