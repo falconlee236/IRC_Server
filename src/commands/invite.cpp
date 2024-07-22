@@ -12,7 +12,7 @@ void Server::invite(Client *client, const std::vector<std::string> params){
         return;
     }
     // NOTE - 내가 명령어를 사용할 때 아무 체널에 있어야함 - Mode에도 넣어야함
-    Channel *myChannel = getExistingChannel(client->getNickname());
+    Channel *myChannel = getChannelbyClient(client);
     if (!myChannel){
         *client << ERR_NOTONCHANNEL_442(client->getNickname(), params[1]);
         return;
@@ -29,8 +29,13 @@ void Server::invite(Client *client, const std::vector<std::string> params){
         *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), params[1]);
         return;
     }
-    //TODO - MODE +i 채널에 사용자를 초대하기 위해서는 초대를 보내는 client가 해달 채널의 운영자여야한다.
+    //NOTE - MODE +i 채널에 사용자를 초대하기 위해서는 초대를 보내는 client가 해달 채널의 운영자여야한다.
+    if (targetChannel->isModeSet(Channel::INVITE_ONLY) && !targetChannel->isClientInOperator(client)){
+        *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), targetChannel->getName());
+        return;
+    }
     targetChannel->addGuest(targetClient);
     *targetChannel << RPL_INVITING_341(client->getNickname(), targetClient->getNickname(), targetChannel->getName());
-    *client << RPL_INVITING_341(client->getNickname(), targetClient->getNickname(), targetChannel->getName());
+    *targetClient << RPL_INVITING_341(client->getNickname(), targetClient->getNickname(), targetChannel->getName());
+    *targetClient >> targetClient->getSocket();
 }
