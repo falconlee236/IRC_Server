@@ -159,6 +159,7 @@ void Server::handleClientEvent(struct kevent &event) {
                 case Message::KICK:
                 case Message::PRIVMSG:
                 case Message::PING:
+                    ping(&client, msg.getParams());
                     break;
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
