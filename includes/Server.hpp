@@ -34,6 +34,7 @@ private:
     void removeClient(int);
     void registerClient(Client *);
     Channel *getExistingChannel(const std::string &);
+    Channel *getChannelbyClient(Client *);
     Client *getClientbyNickname(const std::string &);
 
     bool isValidNickname(const std::string &);

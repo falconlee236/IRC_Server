@@ -156,6 +156,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     mode(&client, msg.getParams());
                     break;
                 case Message::INVITE:
+                    invite(&client, msg.getParams());
+                    break;
                 case Message::KICK:
                 case Message::PRIVMSG:
                 case Message::PING:
@@ -214,6 +216,14 @@ Client *Server::getClientbyNickname(const std::string &nickname){
         if (it->second->getNickname() == nickname){
             return it->second;
         }
+    }
+    return NULL;
+}
+
+Channel *Server::getChannelbyClient(Client *target_client){
+    for (std::set<Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it){
+        if ((*it)->isClientInChannel(target_client))
+            return *it;
     }
     return NULL;
 }
