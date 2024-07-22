@@ -22,6 +22,9 @@
 #define NORMAL_REPLY(number, target, message) \
     ((std::stringstream() << std::setw(3) << std::setfill('0') << number).str() + " " + target + " " + message + CRLF)
 
+// NOTE - PING_REPLIES
+#define RPL_PONG(params) ("PONG :" + params + CRLF)
+
 // NOTE - REGISTER
 #define RPL_WELCOME_001(client) \
     NORMAL_REPLY(001, (client).getNickname(), ":Welcome to the Internet Relay Network " + USER_PREFIX(client))
