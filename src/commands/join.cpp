@@ -59,7 +59,7 @@ void Channel::join(Client *client, const std::string &key) {
     std::string user_list;
     for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
         if (_operators.find(*it) != _operators.end()) {
-            user_list += "@" + (*it)->getNickname();
+            user_list += "@" + (*it)->getNickname() + " ";
         } 
     }
     //NOTE - 위에서 한번에 처리하면 user_list 버그 생겨서 수정함.
