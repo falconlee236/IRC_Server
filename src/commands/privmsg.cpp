@@ -1,4 +1,5 @@
 #include "../../includes/Server.hpp"
+#include "../../includes/Channel.hpp"
 
 void Server::privmsg(Client *client, const std::vector<std::string> params) {
     if (!client->isRegistered) {
@@ -20,17 +21,26 @@ void Server::privmsg(Client *client, const std::vector<std::string> params) {
         if (isValidChannel(*it)) {
             Channel *channel = getExistingChannel(*it);
             if (channel) {
-                // TODO: channel->privmsg(client, message);
+                channel->privmsg(client, message);
             } else {
                 *client << ERR_NOSUCHCHANNEL_403(client->getNickname(), *it);
             }
         } else {
             Client *target = getClientbyNickname(*it);
             if (target) {
-                // TODO
+                *target << RPL_PRIVMSG(*client, target->getNickname(), message);
             } else {
                 *client << ERR_NOSUCHNICK_401(client->getNickname(), *it);
             }
+        }
+    }
+}
+
+void Channel::privmsg(Client *client, const std::string &message) {
+    for (std::set<Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+        if (*it != client) {
+            **it << RPL_PRIVMSG(*client, _name, message);
+            **it >> (*it)->getSocket();
         }
     }
 }
