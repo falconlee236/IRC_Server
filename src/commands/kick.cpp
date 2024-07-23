@@ -38,8 +38,8 @@ void Channel::kick(Client *client, const std::vector<std::string> &users, const 
     for (std::vector<std::string>::const_iterator it = users.begin(); it != users.end(); ++it) {
         std::map<std::string, Client*>::iterator user = _clients_map.find(*it);
         if (user != _clients_map.end()) {
-            Channel::removeClient(client);
             *this << RPL_CHANNELKICK(*client, _name, *it, message);
+            Channel::removeClient(user->second);
         } else {
             *client << ERR_USERNOTINCHANNEL_441(client->getNickname(), *it, _name);
         }
