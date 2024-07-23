@@ -52,6 +52,7 @@ private:
     void topic(Client *, const std::vector<std::string>);
     void invite(Client *, const std::vector<std::string>);
     void kick(Client *, const std::vector<std::string>);
+    void privmsg(Client *, const std::vector<std::string>);
     void ping(Client *, const std::vector<std::string>);
 
 public:
