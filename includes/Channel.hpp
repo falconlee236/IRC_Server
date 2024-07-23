@@ -85,6 +85,7 @@ public:
     void join(Client *, const std::string &);
     void part(Client *);
     void topic(Client *, const std::string &);
+    void kick(Client *, const std::vector<std::string> &, const std::string &);
 
     Channel &operator<<(const std::string &);
 

@@ -161,6 +161,8 @@ void Server::handleClientEvent(struct kevent &event) {
                     invite(&client, msg.getParams());
                     break;
                 case Message::KICK:
+                    kick(&client, msg.getParams());
+                    break;
                 case Message::PRIVMSG:
                 case Message::PING:
                     ping(&client, msg.getParams());
