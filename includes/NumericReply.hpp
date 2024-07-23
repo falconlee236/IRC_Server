@@ -81,7 +81,10 @@
 #define RPL_CHANNELKICK(client, channel_name, user, message) (":" + USER_PREFIX(client) + " KICK " + channel_name + " " + user + " " + message + CRLF)
 
 // NOTE - INVITE_REPLIES
-#define ERR_ERR_NOSUCHNICK_401(target) ERROR_REPLY(401, target, " :No such nick/channel")
+#define ERR_NOSUCHNICK_401(target, invalid_nick) ERROR_REPLY(401, target, invalid_nick + " :No such nick/channel")
 
 #define RPL_INVITING_341(client_name, target_name, channel_name) (":" + client_name + " INVITE " + target_name + " " + channel_name + CRLF)
+
+#define RPL_PRIVMSG(client, target_name, message) (":" + USER_PREFIX(client) + " PRIVMSG " + target_name + " " + message + CRLF)
+
 #endif

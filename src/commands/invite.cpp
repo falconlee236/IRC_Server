@@ -20,7 +20,7 @@ void Server::invite(Client *client, const std::vector<std::string> params){
     //  NOTE - 이미 있는 이름인 경우가 아니면 존재하지 않는 사용자
     Client *targetClient = getClientbyNickname(params[0]);
     if (!targetClient){
-        *client << ERR_ERR_NOSUCHNICK_401(params[0]);
+        *client << ERR_NOSUCHNICK_401(client->getNickname(), params[0]);
         return;
     }
     //NOTE - 대상 채널이 없을 때
