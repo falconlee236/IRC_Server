@@ -55,7 +55,7 @@
 // NOTE - ERR_REPLIES
 #define ERR_NEEDMOREPARAMS_461(target) ERROR_REPLY(461, target, ":Not enough parameters")
 
-    // NOTE - JOIN_REPLIES
+// NOTE - JOIN_REPLIES
 #define ERR_USERONCHANNEL_443(target, channel_name) ERROR_REPLY(443, target, target + " " + channel_name + " :is already on channel")
 #define ERR_CHANNELISFULL_471(target, channel_name) ERROR_REPLY(471, target, channel_name + " :Cannot join channel (+l)")
 #define ERR_INVITEONLYCHAN_473(target, channel_name) ERROR_REPLY(473, target, channel_name + " :Cannot join channel (+i)")
@@ -67,6 +67,7 @@
 #define RPL_ENDOFNAMES_366(target, channel_name) NORMAL_REPLY(366, target, channel_name + " :End of /NAMES list")
 
 #define ERR_NOSUCHCHANNEL_403(target, channel_name) ERROR_REPLY(403, target, channel_name + " :No such channel")
+#define ERR_USERNOTINCHANNEL_441(target, user, channel_name) ERROR_REPLY(441, target, user + " " + channel_name + " :They aren't on that channel")
 #define ERR_NOTONCHANNEL_442(target, channel_name) ERROR_REPLY(442, target, channel_name + " :You're not on that channel")
 
 #define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
@@ -77,6 +78,7 @@
 #define ERR_CHANOPRIVSNEEDED_482(target, channel_name) ERROR_REPLY(482, target, channel_name + " :You're not channel operator")
 
 #define RPL_CHANNELTOPIC(client, channel_name, topic) (":" + USER_PREFIX(client) + " TOPIC " + channel_name + " " + topic + CRLF)
+#define RPL_CHANNELKICK(client, channel_name, user, message) (":" + USER_PREFIX(client) + " KICK " + channel_name + " " + user + " " + message + CRLF)
 
 // NOTE - INVITE_REPLIES
 #define ERR_ERR_NOSUCHNICK_401(target) ERROR_REPLY(401, target, " :No such nick/channel")
