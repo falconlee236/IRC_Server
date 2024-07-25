@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <map>
+#include <random>
 
 #include "Client.hpp"
 #include "Message.hpp"
@@ -54,6 +55,7 @@ private:
     void kick(Client *, const std::vector<std::string>);
     void privmsg(Client *, const std::vector<std::string>);
     void ping(Client *, const std::vector<std::string>);
+    void bot(Client *, const std::vector<std::string>);
 
 public:
     Server(void);
