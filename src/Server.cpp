@@ -169,6 +169,9 @@ void Server::handleClientEvent(struct kevent &event) {
                 case Message::PING:
                     ping(&client, msg.getParams());
                     break;
+                case Message::BOT:
+                    bot(&client, msg.getParams());
+                    break;
                 default:
                     client << ERR_UNKNOWNCOMMAND_421(client.getNickname(), msg.getCmd());
                     break;
