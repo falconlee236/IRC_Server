@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-
+#include <string>
 // <message>  ::= [':' <prefix> <SPACE> ] <command> <params> <crlf>
 // <prefix>   ::= <servername> | <nick> [ '!' <user> ] [ '@' <host> ]
 // <command>  ::= <letter> { <letter> } | <number> <number> <number>
@@ -17,10 +17,22 @@
 #define CRLF "\r\n"
 #define USER_PREFIX(client) ((client).getNickname() + "!" + (client).getUsername() + "@" + (client).getHostname())
 
+inline std::string to_string(int number) {
+    std::ostringstream ss;
+    ss << number;
+    return ss.str();
+}
+
+inline std::string normal_reply_helper(int number, const std::string& target, const std::string& message) {
+    std::ostringstream ss;
+    ss << std::setw(3) << std::setfill('0') << number;
+    return ss.str() + " " + target + " " + message + CRLF;
+}
+
 #define ERROR_REPLY(number, target, message) \
-    (std::to_string(number) + " " + target + " " + message + CRLF)
+    (to_string(number) + " " + target + " " + message + CRLF)
 #define NORMAL_REPLY(number, target, message) \
-    ((std::stringstream() << std::setw(3) << std::setfill('0') << number).str() + " " + target + " " + message + CRLF)
+     (normal_reply_helper(number, target, message))
 
 // NOTE - PING_REPLIES
 #define RPL_PONG(params) ("PONG :" + params + CRLF)
