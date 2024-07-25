@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include <sstream>
+#include <vector>
 
 #define CHANNEL_LENGTH 200
 
