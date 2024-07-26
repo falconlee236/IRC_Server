@@ -82,7 +82,7 @@ inline std::string normal_reply_helper(int number, const std::string& target, co
 #define ERR_USERNOTINCHANNEL_441(target, user, channel_name) ERROR_REPLY(441, target, user + " " + channel_name + " :They aren't on that channel")
 #define ERR_NOTONCHANNEL_442(target, channel_name) ERROR_REPLY(442, target, channel_name + " :You're not on that channel")
 
-#define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
+#define RPL_CHANNELPART(client, channel_name, message) (":" + USER_PREFIX(client) + " PART " + channel_name + " " + message + CRLF)
 
 // NOTE - TOPIC
 #define RPL_NOTOPIC_331(target, channel_name) NORMAL_REPLY(331, target, channel_name + " :No topic is set")

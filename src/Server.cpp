@@ -74,6 +74,7 @@ void Server::run() {
         // 발생한 event가 반환될 배열
         struct kevent events[10];
         int new_events = kevent(_kqueue_fd, NULL, 0, events, 10, NULL);
+        std::cout << new_events << "\n";
         if (new_events < 0) {
             throw std::runtime_error("Kevent failed");
         }
