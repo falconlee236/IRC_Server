@@ -23,6 +23,7 @@ public:
         KICK,
         PRIVMSG,
         PING,
+        BOT,
         CMD_SIZE
     } e_cmd;
 

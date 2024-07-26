@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-
+#include <string>
 // <message>  ::= [':' <prefix> <SPACE> ] <command> <params> <crlf>
 // <prefix>   ::= <servername> | <nick> [ '!' <user> ] [ '@' <host> ]
 // <command>  ::= <letter> { <letter> } | <number> <number> <number>
@@ -17,10 +17,22 @@
 #define CRLF "\r\n"
 #define USER_PREFIX(client) ((client).getNickname() + "!" + (client).getUsername() + "@" + (client).getHostname())
 
+inline std::string to_string(int number) {
+    std::ostringstream ss;
+    ss << number;
+    return ss.str();
+}
+
+inline std::string normal_reply_helper(int number, const std::string& target, const std::string& message) {
+    std::ostringstream ss;
+    ss << std::setw(3) << std::setfill('0') << number;
+    return ss.str() + " " + target + " " + message + CRLF;
+}
+
 #define ERROR_REPLY(number, target, message) \
-    (std::to_string(number) + " " + target + " " + message + CRLF)
+    (to_string(number) + " " + target + " " + message + CRLF)
 #define NORMAL_REPLY(number, target, message) \
-    ((std::stringstream() << std::setw(3) << std::setfill('0') << number).str() + " " + target + " " + message + CRLF)
+     (normal_reply_helper(number, target, message))
 
 // NOTE - PING_REPLIES
 #define RPL_PONG(params) ("PONG :" + params + CRLF)
@@ -70,7 +82,7 @@
 #define ERR_USERNOTINCHANNEL_441(target, user, channel_name) ERROR_REPLY(441, target, user + " " + channel_name + " :They aren't on that channel")
 #define ERR_NOTONCHANNEL_442(target, channel_name) ERROR_REPLY(442, target, channel_name + " :You're not on that channel")
 
-#define RPL_CHANNELPART(client, channel_name) (":" + USER_PREFIX(client) + " PART " + channel_name + CRLF)
+#define RPL_CHANNELPART(client, channel_name, message) (":" + USER_PREFIX(client) + " PART " + channel_name + " " + message + CRLF)
 
 // NOTE - TOPIC
 #define RPL_NOTOPIC_331(target, channel_name) NORMAL_REPLY(331, target, channel_name + " :No topic is set")

@@ -29,6 +29,7 @@ void Server::privmsg(Client *client, const std::vector<std::string> params) {
             Client *target = getClientbyNickname(*it);
             if (target) {
                 *target << RPL_PRIVMSG(*client, target->getNickname(), message);
+                *target >> target->getSocket();
             } else {
                 *client << ERR_NOSUCHNICK_401(client->getNickname(), *it);
             }

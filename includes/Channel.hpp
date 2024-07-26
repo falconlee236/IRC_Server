@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include <sstream>
+#include <vector>
 
 #define CHANNEL_LENGTH 200
 
@@ -83,7 +84,7 @@ public:
     bool isModeSet(_ChannelFlag);
 
     void join(Client *, const std::string &);
-    void part(Client *);
+    void part(Client *, const std::string &);
     void topic(Client *, const std::string &);
     void kick(Client *, const std::vector<std::string> &, const std::string &);
     void privmsg(Client *, const std::string &);

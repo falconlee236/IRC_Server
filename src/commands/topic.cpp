@@ -31,8 +31,7 @@ void Channel::topic(Client *client, const std::string &topic) {
             *client << RPL_TOPIC_332(client->getNickname(), _name, _topic);
         }
     } else {
-        // TODO: operator만 topic 설정할 수 있는지 확인
-        if (isModeSet(SET_TOPIC) && !isOperator(client)) {
+        if ((isModeSet(SET_TOPIC) && !isOperator(client)) || !isModeSet(SET_TOPIC)) {
             *client << ERR_CHANOPRIVSNEEDED_482(client->getNickname(), _name);
         } else {
             setTopic(client, topic);

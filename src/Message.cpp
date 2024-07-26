@@ -5,7 +5,7 @@ const std::string Message::_commandList[Message::CMD_SIZE + 1] = {
     "NICK", "USER", "QUIT", 
     "JOIN", "PART", "TOPIC", 
     "MODE", "INVITE", "KICK", 
-    "PRIVMSG", "PING"
+    "PRIVMSG", "PING", "BOT"
 };
 
 Message::Message() : _cmd_type(Message::NONE), _cmd(), _params() {}
